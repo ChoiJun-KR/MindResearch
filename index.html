@@ -1,162 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>마음연구소 · 나를 알아가는 시간</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@300;400;700&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@300;400;700&family=Nanum+Gothic:wght@400;700;800&display=swap');
+    :root {
+      --primary: #FF6B6B;
+      --primary-light: #FFE0E0;
+      --accent: #FFD93D;
+      --bg: #FFF9F5;
+      --card-bg: #FFFFFF;
+      --text: #2D2D2D;
+      --text-muted: #888;
+      --radius: 20px;
+      --shadow: 0 4px 24px rgba(255,107,107,0.10);
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg);
+      font-family: 'Nanum Gothic', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-  :root {
-    --primary: #FF6B6B;
-    --primary-light: #FFE0E0;
-    --bg: #FFF9F5;
-    --card-bg: #FFFFFF;
-    --text: #2D2D2D;
-    --text-muted: #888;
-    --radius: 20px;
-    --shadow: 0 4px 24px rgba(255,107,107,0.10);
-  }
+    #app {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 0 4rem;
+    }
 
-  body { background: transparent; font-family: 'Nanum Gothic', sans-serif; color: var(--text); }
+    /* ── HEADER ── */
+    .site-header {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+      border-radius: 0 0 32px 32px;
+      padding: 2rem 1.5rem 2.5rem;
+      text-align: center;
+      color: white;
+      margin-bottom: 2rem;
+    }
+    .site-header .logo {
+      font-size: 13px; font-weight: 700; letter-spacing: 3px;
+      opacity: 0.85; margin-bottom: 0.5rem; text-transform: uppercase;
+    }
+    .site-header h1 {
+      font-family: 'Gmarket Sans', sans-serif;
+      font-size: 26px; font-weight: 700; line-height: 1.3; margin-bottom: 0.5rem;
+    }
+    .site-header p { font-size: 14px; opacity: 0.9; }
+    .dot-row { display: flex; justify-content: center; gap: 6px; margin-top: 1.2rem; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: all 0.3s; }
+    .dot.active { background: white; transform: scale(1.3); }
+    .dot.done { background: rgba(255,255,255,0.7); }
 
-  #app { max-width: 680px; margin: 0 auto; padding: 0 0 3rem; }
+    /* ── SURVEY LIST ── */
+    #survey-list { padding: 0 1rem; }
+    .section-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 2px;
+      color: var(--primary); text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .survey-card {
+      background: white; border-radius: var(--radius); padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent; box-shadow: var(--shadow);
+    }
+    .survey-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,107,107,0.18); border-color: var(--primary-light); }
+    .survey-card.locked { cursor: default; opacity: 0.5; }
+    .survey-card.locked:hover { transform: none; box-shadow: var(--shadow); border-color: transparent; }
+    .survey-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .survey-icon.pink { background: #FFE0E0; }
+    .survey-icon.gray { background: #F0F0F0; }
+    .survey-card-info { flex: 1; }
+    .survey-card-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+    .survey-card-info p { font-size: 13px; color: var(--text-muted); }
+    .survey-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+    .badge-available { background: #FFE0E0; color: var(--primary); }
+    .badge-coming { background: #F0F0F0; color: #aaa; }
 
-  .site-header {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-    border-radius: 0 0 32px 32px;
-    padding: 2rem 1.5rem 2.5rem;
-    text-align: center;
-    color: white;
-    margin-bottom: 2rem;
-  }
-  .site-header .logo { font-size: 13px; font-weight: 700; letter-spacing: 3px; opacity: 0.85; margin-bottom: 0.5rem; text-transform: uppercase; }
-  .site-header h1 { font-family: 'Gmarket Sans', sans-serif; font-size: 26px; font-weight: 700; line-height: 1.3; margin-bottom: 0.5rem; }
-  .site-header p { font-size: 14px; opacity: 0.9; }
-  .dot-row { display: flex; justify-content: center; gap: 6px; margin-top: 1.2rem; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: all 0.3s; }
-  .dot.active { background: white; transform: scale(1.3); }
-  .dot.done { background: rgba(255,255,255,0.7); }
+    /* ── SURVEY SCREEN ── */
+    #survey-screen { display: none; padding: 0 1rem; }
+    .progress-bar-wrap { background: #FFE0E0; border-radius: 99px; height: 8px; margin-bottom: 0.5rem; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #FF6B6B, #FF8E53); border-radius: 99px; transition: width 0.4s ease; }
+    .progress-label { font-size: 12px; color: var(--text-muted); text-align: right; margin-bottom: 1.5rem; }
 
-  #survey-list { padding: 0 1rem; }
-  .section-title { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; margin-bottom: 1rem; }
+    .question-card {
+      background: white; border-radius: var(--radius); padding: 1.75rem 1.5rem;
+      box-shadow: var(--shadow); margin-bottom: 1.5rem;
+      animation: slideIn 0.35s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .q-number { font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: 2px; margin-bottom: 0.6rem; text-transform: uppercase; }
+    .q-text { font-size: 17px; font-weight: 700; line-height: 1.5; margin-bottom: 1.5rem; }
 
-  .survey-card {
-    background: white; border-radius: var(--radius); padding: 1.25rem 1.5rem;
-    margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;
-    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    border: 2px solid transparent; box-shadow: var(--shadow);
-  }
-  .survey-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,107,107,0.18); border-color: var(--primary-light); }
-  .survey-card.locked { cursor: default; opacity: 0.5; }
-  .survey-card.locked:hover { transform: none; box-shadow: var(--shadow); border-color: transparent; }
-  .survey-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
-  .survey-icon.pink { background: #FFE0E0; }
-  .survey-icon.gray { background: #F0F0F0; }
-  .survey-card-info { flex: 1; }
-  .survey-card-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
-  .survey-card-info p { font-size: 13px; color: var(--text-muted); }
-  .survey-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
-  .badge-available { background: #FFE0E0; color: var(--primary); }
-  .badge-coming { background: #F0F0F0; color: #aaa; }
+    .options-list { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      background: #FFF9F5; border: 2px solid #F0E8E0; border-radius: 14px;
+      padding: 0.9rem 1.1rem; text-align: left; cursor: pointer;
+      transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px;
+      font-family: 'Nanum Gothic', sans-serif; font-size: 14px; line-height: 1.5; color: var(--text);
+    }
+    .option-btn:hover { border-color: var(--primary); background: #FFF0F0; transform: translateX(4px); }
+    .option-btn.selected { border-color: var(--primary); background: #FFE0E0; color: #CC3333; transform: translateX(4px); }
+    .option-score { font-weight: 700; font-size: 15px; min-width: 20px; color: var(--primary); opacity: 0.6; margin-top: 1px; }
+    .option-btn.selected .option-score { opacity: 1; }
 
-  #survey-screen { display: none; padding: 0 1rem; }
+    .hint-text { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 0.5rem; opacity: 0.8; }
+    .btn-back {
+      padding: 0.9rem 1.4rem; border-radius: 14px;
+      font-family: 'Nanum Gothic', sans-serif; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; border: 2px solid;
+      background: white; border-color: #E0D8D0; color: var(--text-muted);
+    }
+    .btn-back:hover { border-color: #aaa; color: var(--text); }
 
-  .progress-bar-wrap { background: #FFE0E0; border-radius: 99px; height: 8px; margin-bottom: 0.5rem; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #FF6B6B, #FF8E53); border-radius: 99px; transition: width 0.4s ease; }
-  .progress-label { font-size: 12px; color: var(--text-muted); text-align: right; margin-bottom: 1.5rem; }
+    /* ── RESULT SCREEN ── */
+    #result-screen { display: none; padding: 0 1rem; }
 
-  .question-card {
-    background: white; border-radius: var(--radius); padding: 1.75rem 1.5rem;
-    box-shadow: var(--shadow); margin-bottom: 1.5rem;
-    animation: slideIn 0.35s ease;
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .q-number { font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: 2px; margin-bottom: 0.6rem; text-transform: uppercase; }
-  .q-text { font-size: 17px; font-weight: 700; line-height: 1.5; margin-bottom: 1.5rem; }
+    .result-hero {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+      border-radius: 28px; padding: 2rem 1.5rem; text-align: center;
+      color: white; margin-bottom: 1.25rem; position: relative; overflow: hidden;
+    }
+    .result-hero::before { content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.1); top: -60px; right: -60px; }
+    .result-hero::after { content: ''; position: absolute; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.07); bottom: -50px; left: -40px; }
+    .result-emoji { font-size: 52px; margin-bottom: 0.5rem; }
+    .result-score-label { font-size: 12px; opacity: 0.85; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+    .result-score { font-family: 'Gmarket Sans', sans-serif; font-size: 56px; font-weight: 700; line-height: 1; margin: 0.2rem 0; }
+    .result-score span { font-size: 22px; opacity: 0.8; }
+    .result-level { font-size: 18px; font-weight: 700; margin-top: 0.5rem; }
 
-  .options-list { display: flex; flex-direction: column; gap: 10px; }
-  .option-btn {
-    background: #FFF9F5; border: 2px solid #F0E8E0; border-radius: 14px;
-    padding: 0.9rem 1.1rem; text-align: left; cursor: pointer;
-    transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px;
-    font-family: 'Nanum Gothic', sans-serif; font-size: 14px; line-height: 1.5; color: var(--text);
-  }
-  .option-btn:hover { border-color: var(--primary); background: #FFF0F0; transform: translateX(4px); }
-  .option-btn.selected { border-color: var(--primary); background: #FFE0E0; color: #CC3333; transform: translateX(4px); }
-  .option-score { font-weight: 700; font-size: 15px; min-width: 20px; color: var(--primary); opacity: 0.6; margin-top: 1px; }
-  .option-btn.selected .option-score { opacity: 1; }
+    .result-card { background: white; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1rem; }
+    .result-card h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; margin-bottom: 1rem; }
+    .result-quote { font-size: 16px; font-weight: 700; line-height: 1.6; color: #333; background: #FFF5F5; border-left: 3px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 12px 12px 0; margin-bottom: 1rem; }
+    .result-traits { display: flex; flex-direction: column; gap: 8px; }
+    .trait-item { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.5; color: #555; }
+    .trait-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 6px; }
 
-  .nav-row { display: flex; gap: 10px; margin-top: 0; }
-  .btn-back {
-    padding: 0.9rem 1.4rem; border-radius: 14px;
-    font-family: 'Nanum Gothic', sans-serif; font-size: 15px; font-weight: 700;
-    cursor: pointer; transition: all 0.2s; border: 2px solid;
-    background: white; border-color: #E0D8D0; color: var(--text-muted);
-  }
-  .btn-back:hover { border-color: #aaa; color: var(--text); }
+    .coaching-card { background: linear-gradient(135deg, #FFF9F5 0%, #FFF0E8 100%); border-radius: var(--radius); padding: 1.5rem; border: 2px solid #FFE0D0; margin-bottom: 1rem; }
+    .coaching-card h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #FF8E53; text-transform: uppercase; margin-bottom: 1rem; }
+    .coaching-item { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.6; color: #555; align-items: flex-start; }
+    .coaching-num { background: #FF8E53; color: white; font-weight: 700; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
 
-  .hint-text {
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: -0.5rem;
-    margin-bottom: 0.5rem;
-    opacity: 0.8;
-  }
+    .action-row { display: flex; gap: 10px; margin-bottom: 1rem; }
+    .btn-share, .btn-retry {
+      flex: 1; padding: 1rem; border-radius: 14px;
+      font-family: 'Nanum Gothic', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer; border: 2px solid; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-share { background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-color: transparent; color: white; }
+    .btn-share:hover { opacity: 0.9; }
+    .btn-retry { background: white; border-color: #E0D8D0; color: var(--text-muted); }
+    .btn-retry:hover { border-color: var(--primary); color: var(--primary); }
 
-  #result-screen { display: none; padding: 0 1rem; }
+    .more-surveys-section { margin-top: 2rem; }
 
-  .result-hero {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-    border-radius: 28px; padding: 2rem 1.5rem; text-align: center;
-    color: white; margin-bottom: 1.25rem; position: relative; overflow: hidden;
-  }
-  .result-hero::before { content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.1); top: -60px; right: -60px; }
-  .result-hero::after { content: ''; position: absolute; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.07); bottom: -50px; left: -40px; }
-  .result-emoji { font-size: 52px; margin-bottom: 0.5rem; }
-  .result-score-label { font-size: 12px; opacity: 0.85; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
-  .result-score { font-family: 'Gmarket Sans', sans-serif; font-size: 56px; font-weight: 700; line-height: 1; margin: 0.2rem 0; }
-  .result-score span { font-size: 22px; opacity: 0.8; }
-  .result-level { font-size: 18px; font-weight: 700; margin-top: 0.5rem; }
+    .score-bar-wrap { margin: 1rem 0; }
+    .score-bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+    .score-bar-bg { background: #F0E8E0; border-radius: 99px; height: 12px; overflow: hidden; }
+    .score-bar-fg { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #FF6B6B, #FF8E53); transition: width 1s ease; }
+    .score-zones { display: flex; gap: 4px; margin-top: 8px; }
+    .zone { flex: 1; text-align: center; font-size: 10px; padding: 3px 2px; border-radius: 6px; font-weight: 700; opacity: 0.7; }
+    .zone.active { opacity: 1; transform: scale(1.05); }
 
-  .result-card { background: white; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1rem; }
-  .result-card h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; margin-bottom: 1rem; }
-  .result-quote { font-size: 16px; font-weight: 700; line-height: 1.6; color: #333; background: #FFF5F5; border-left: 3px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 12px 12px 0; margin-bottom: 1rem; }
-  .result-traits { display: flex; flex-direction: column; gap: 8px; }
-  .trait-item { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.5; color: #555; }
-  .trait-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 6px; }
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #333; color: white; padding: 12px 24px;
+      border-radius: 99px; font-size: 14px; font-weight: 700;
+      transition: transform 0.3s; z-index: 999; pointer-events: none; white-space: nowrap;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
 
-  .coaching-card { background: linear-gradient(135deg, #FFF9F5 0%, #FFF0E8 100%); border-radius: var(--radius); padding: 1.5rem; border: 2px solid #FFE0D0; margin-bottom: 1rem; }
-  .coaching-card h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #FF8E53; text-transform: uppercase; margin-bottom: 1rem; }
-  .coaching-item { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.6; color: #555; align-items: flex-start; }
-  .coaching-num { background: #FF8E53; color: white; font-weight: 700; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-
-  .action-row { display: flex; gap: 10px; margin-bottom: 1rem; }
-  .btn-share, .btn-retry {
-    flex: 1; padding: 1rem; border-radius: 14px;
-    font-family: 'Nanum Gothic', sans-serif; font-size: 14px; font-weight: 700;
-    cursor: pointer; border: 2px solid; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .btn-share { background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-color: transparent; color: white; }
-  .btn-share:hover { opacity: 0.9; }
-  .btn-retry { background: white; border-color: #E0D8D0; color: var(--text-muted); }
-  .btn-retry:hover { border-color: var(--primary); color: var(--primary); }
-
-  .more-surveys-section { margin-top: 2rem; }
-
-  .score-bar-wrap { margin: 1rem 0; }
-  .score-bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
-  .score-bar-bg { background: #F0E8E0; border-radius: 99px; height: 12px; overflow: hidden; }
-  .score-bar-fg { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #FF6B6B, #FF8E53); transition: width 1s ease; }
-  .score-zones { display: flex; gap: 4px; margin-top: 8px; }
-  .zone { flex: 1; text-align: center; font-size: 10px; padding: 3px 2px; border-radius: 6px; font-weight: 700; opacity: 0.7; }
-  .zone.active { opacity: 1; transform: scale(1.05); }
-
-  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #333; color: white; padding: 12px 24px; border-radius: 99px; font-size: 14px; font-weight: 700; transition: transform 0.3s; z-index: 999; pointer-events: none; white-space: nowrap; }
-  #toast.show { transform: translateX(-50%) translateY(0); }
-</style>
+    /* ── SHARE MODAL ── */
+    .share-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .share-modal {
+      background: white; border-radius: 20px; padding: 1.5rem;
+      max-width: 400px; width: 100%;
+    }
+    .share-modal p { font-weight: 700; font-size: 15px; margin-bottom: 1rem; }
+    .share-modal textarea {
+      width: 100%; height: 140px; border: 2px solid #FFE0E0;
+      border-radius: 12px; padding: 0.8rem; font-size: 13px;
+      resize: none; font-family: 'Nanum Gothic', sans-serif; line-height: 1.6;
+    }
+    .share-modal button {
+      margin-top: 1rem; width: 100%; padding: 0.8rem;
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      color: white; border: none; border-radius: 12px;
+      font-weight: 700; font-size: 15px; cursor: pointer;
+      font-family: 'Nanum Gothic', sans-serif;
+    }
+  </style>
+</head>
+<body>
 
 <div id="app">
   <div class="site-header">
@@ -166,6 +216,7 @@
     <div class="dot-row" id="step-dots"></div>
   </div>
 
+  <!-- 설문 목록 -->
   <div id="survey-list">
     <div class="section-title">📋 설문 목록</div>
     <div class="survey-card" onclick="startSurvey()">
@@ -188,6 +239,7 @@
     </div>
   </div>
 
+  <!-- 설문 진행 -->
   <div id="survey-screen">
     <div class="progress-bar-wrap">
       <div class="progress-bar-fill" id="progress-fill"></div>
@@ -201,12 +253,10 @@
     </div>
 
     <p class="hint-text">선택하면 자동으로 다음 문항으로 넘어가요</p>
-
-    <div class="nav-row">
-      <button class="btn-back" id="btn-back" onclick="goBack()">◀ 이전으로</button>
-    </div>
+    <button class="btn-back" id="btn-back" onclick="goBack()">◀ 이전으로</button>
   </div>
 
+  <!-- 결과 화면 -->
   <div id="result-screen">
     <div class="result-hero">
       <div class="result-emoji" id="res-emoji"></div>
@@ -265,218 +315,291 @@
 <div id="toast"></div>
 
 <script>
-const questions = [
-  { text: '"나는 나 자신이 꽤 괜찮은 사람이야"', options: [
-    { score: 1, text: '나? 솔직히 아직은 "음… 리셋 필요" 상태' },
-    { score: 2, text: '가끔 보면 "나도 나쁘진 않네?" 정도' },
-    { score: 3, text: '평타는 치는 나, 인정' },
-    { score: 4, text: '"나 꽤 괜찮은데?" 생각 자주 함' },
-    { score: 5, text: '나 = 꽤 괜찮은 사람 확정 (내적 합의 완료!!)' },
-  ]},
-  { text: '"나는 나에게 좋은 점이 많이 있다고 생각해"', options: [
-    { score: 1, text: '장점 찾기 미션 실패 상태' },
-    { score: 2, text: '한두 개는… 어딘가 있을지도?' },
-    { score: 3, text: '평균 정도는 있는 듯' },
-    { score: 4, text: '"나 은근 괜찮은데?" 자주 느낌' },
-    { score: 5, text: '장점 리스트 쓰면 A4 꽉 참' },
-  ]},
-  { text: '"나는 다른 사람들과 비교해도 크게 밀리지 않는 사람이야"', options: [
-    { score: 1, text: '비교하면 바로 멘탈 로그아웃' },
-    { score: 2, text: '비교하면 살짝 작아짐' },
-    { score: 3, text: '그냥 비슷한 느낌' },
-    { score: 4, text: '"나 생각보다 괜찮네?" 구간' },
-    { score: 5, text: '비교? 오히려 내가 기준 되는 편' },
-  ]},
-  { text: '"나는 나 자신을 대체로 좋아하는 편이야"', options: [
-    { score: 1, text: '나랑 좀 어색한 사이' },
-    { score: 2, text: '아직 친해지는 중' },
-    { score: 3, text: '그냥 보통 친구 정도' },
-    { score: 4, text: '꽤 괜찮은 사이' },
-    { score: 5, text: '거의 찐친 + 내 편 확정' },
-  ]},
-  { text: '"나는 내가 하는 일에 어느 정도 자신이 있어"', options: [
-    { score: 1, text: '시작 전에 이미 불안 ON' },
-    { score: 2, text: '"일단 해보긴 하는데…" 상태' },
-    { score: 3, text: '평균적인 자신감' },
-    { score: 4, text: '"이 정도는 나 가능"' },
-    { score: 5, text: '대부분 "나 믿고 가" 모드' },
-  ]},
-  { text: '"나는 나도 충분히 가치 있는 사람이라고 생각해"', options: [
-    { score: 1, text: '나… 가치 계산이 잘 안 됨' },
-    { score: 2, text: '가끔은 의문이 듦' },
-    { score: 3, text: '그냥 평균적인 존재라고 느낌' },
-    { score: 4, text: '나 꽤 의미 있는 사람임' },
-    { score: 5, text: '"나 존재 자체가 가치 있음" 확신' },
-  ]},
-  { text: '"나는 내 단점보다 장점이 더 잘 보여"', options: [
-    { score: 1, text: '단점 확대 렌즈 장착 상태' },
-    { score: 2, text: '단점이 더 눈에 띔' },
-    { score: 3, text: '반반 보임' },
-    { score: 4, text: '장점이 조금 더 잘 보임' },
-    { score: 5, text: '장점 자동 하이라이트 됨' },
-  ]},
-  { text: '"나는 나 자신을 존중할 만한 사람이라고 느껴"', options: [
-    { score: 1, text: '아직은 스스로 인정 보류' },
-    { score: 2, text: '가끔 "음… 그럴 수도?"' },
-    { score: 3, text: '보통 정도로 인정' },
-    { score: 4, text: '꽤 존중할 만한 사람이라 느낌' },
-    { score: 5, text: '"나 존중 안 하면 손해" 수준' },
-  ]},
-  { text: '"나는 앞으로도 잘 해낼 수 있을 것 같다는 생각이 들어"', options: [
-    { score: 1, text: '미래 생각하면 약간 정지 화면' },
-    { score: 2, text: '살짝 걱정이 앞섬' },
-    { score: 3, text: '그냥 평범하게는 할 듯' },
-    { score: 4, text: '꽤 잘할 것 같은 느낌 있음' },
-    { score: 5, text: '미래? 그냥 내가 뚫고 감' },
-  ]},
-  { text: '"나는 전반적으로 나 자신에게 만족해"', options: [
-    { score: 1, text: '아직 만족 버튼 OFF 상태' },
-    { score: 2, text: '조금은 괜찮은데 아쉬움 많음' },
-    { score: 3, text: '보통 정도 만족' },
-    { score: 4, text: '꽤 만족하는 편' },
-    { score: 5, text: '"나 지금 꽤 괜찮은 인생 중"' },
-  ]},
-];
+  const SITE_URL = 'https://choijun-kr.github.io/MindResearch/';
 
-const profiles = [
-  { range: [10,19], emoji:'🪫', level:'자존감 저하 상태', quote:'자기 인식이 많이 부정적으로 기울어진 상태예요', traits:['스스로를 부정적으로 보는 경향이 있어요','장점보다 단점이 더 크게 느껴지곤 해요','비교 상황에서 쉽게 위축되는 편이에요','"나는 부족하다"는 생각이 기본값처럼 작동해요'], coaching:['작은 성공 경험을 매일 "기록"하는 게 중요해요','비교 대신 "어제의 나" 기준으로 평가해보세요','장점은 발견이 아니라 연습해서 보이게 만드는 거예요'], zoneIdx:0 },
-  { range: [20,29], emoji:'💛', level:'불안정 자존감 상태', quote:'상황에 따라 흔들리는 자존감이에요', traits:['사람, 성취, 분위기에 따라 자존감이 오르내려요','가끔은 괜찮지만 기본 안정감은 아직 약한 편이에요','자존감이 "형성 중"이지만 아직 고정되지 않은 상태예요'], coaching:['외부 평가보다 내 스스로의 기준을 만들어보세요','"나는 어떤 상황에서 흔들리는가?" 인식이 중요해요','자기 확신을 감정이 아니라 습관으로 만들어가 보세요'], zoneIdx:1 },
-  { range: [30,39], emoji:'🌤', level:'평균 자존감 상태', quote:'평균적으로 안정된 자존감이에요', traits:['자신에 대한 기본 인식은 비교적 안정적이에요','단점과 장점을 균형 있게 보는 편이에요','스트레스 상황에서만 살짝 흔들리는 편이에요'], coaching:['기반이 충분히 안정적이에요, 잘 하고 있어요!','중요한 건 "흔들릴 때 회복 속도"예요','자기평가를 너무 엄격하게만 하지 않아도 괜찮아요'], zoneIdx:2 },
-  { range: [40,44], emoji:'🌿', level:'안정 자존감 상태', quote:'꽤 단단한 자존감 구조예요', traits:['스스로에 대한 긍정 인식이 안정적이에요','비교 상황에서도 크게 흔들리지 않는 편이에요','실패를 자책보다 경험으로 해석하는 경향이 있어요'], coaching:['지금의 자기 인식 유지가 핵심이에요','타인의 평가보다 자기 기준 중심을 유지하세요','과한 자기비판만 조심하면 매우 건강한 상태예요'], zoneIdx:3 },
-  { range: [45,50], emoji:'✨', level:'매우 높은 자존감 상태', quote:'자기 확신이 안정적으로 자리 잡은 상태예요', traits:['자신에 대한 긍정적 인식이 매우 강한 편이에요','실패에도 자아 가치가 크게 흔들리지 않아요','자기 효능감이 높고 안정적으로 내면화된 상태예요'], coaching:['건강한 수준의 자신감을 잘 유지하고 있어요','"타인 공감 균형" 유지가 중요한 포인트예요','자기 확신이 타인 무시로 흐르지 않게만 주의하면 완벽해요'], zoneIdx:4 },
-];
+  const questions = [
+    { text: '"나는 나 자신이 꽤 괜찮은 사람이야"', options: [
+      { score: 1, text: '나? 솔직히 아직은 "음… 리셋 필요" 상태' },
+      { score: 2, text: '가끔 보면 "나도 나쁘진 않네?" 정도' },
+      { score: 3, text: '평타는 치는 나, 인정' },
+      { score: 4, text: '"나 꽤 괜찮은데?" 생각 자주 함' },
+      { score: 5, text: '나 = 꽤 괜찮은 사람 확정 (내적 합의 완료!!)' },
+    ]},
+    { text: '"나는 나에게 좋은 점이 많이 있다고 생각해"', options: [
+      { score: 1, text: '장점 찾기 미션 실패 상태' },
+      { score: 2, text: '한두 개는… 어딘가 있을지도?' },
+      { score: 3, text: '평균 정도는 있는 듯' },
+      { score: 4, text: '"나 은근 괜찮은데?" 자주 느낌' },
+      { score: 5, text: '장점 리스트 쓰면 A4 꽉 참' },
+    ]},
+    { text: '"나는 다른 사람들과 비교해도 크게 밀리지 않는 사람이야"', options: [
+      { score: 1, text: '비교하면 바로 멘탈 로그아웃' },
+      { score: 2, text: '비교하면 살짝 작아짐' },
+      { score: 3, text: '그냥 비슷한 느낌' },
+      { score: 4, text: '"나 생각보다 괜찮네?" 구간' },
+      { score: 5, text: '비교? 오히려 내가 기준 되는 편' },
+    ]},
+    { text: '"나는 나 자신을 대체로 좋아하는 편이야"', options: [
+      { score: 1, text: '나랑 좀 어색한 사이' },
+      { score: 2, text: '아직 친해지는 중' },
+      { score: 3, text: '그냥 보통 친구 정도' },
+      { score: 4, text: '꽤 괜찮은 사이' },
+      { score: 5, text: '거의 찐친 + 내 편 확정' },
+    ]},
+    { text: '"나는 내가 하는 일에 어느 정도 자신이 있어"', options: [
+      { score: 1, text: '시작 전에 이미 불안 ON' },
+      { score: 2, text: '"일단 해보긴 하는데…" 상태' },
+      { score: 3, text: '평균적인 자신감' },
+      { score: 4, text: '"이 정도는 나 가능"' },
+      { score: 5, text: '대부분 "나 믿고 가" 모드' },
+    ]},
+    { text: '"나는 나도 충분히 가치 있는 사람이라고 생각해"', options: [
+      { score: 1, text: '나… 가치 계산이 잘 안 됨' },
+      { score: 2, text: '가끔은 의문이 듦' },
+      { score: 3, text: '그냥 평균적인 존재라고 느낌' },
+      { score: 4, text: '나 꽤 의미 있는 사람임' },
+      { score: 5, text: '"나 존재 자체가 가치 있음" 확신' },
+    ]},
+    { text: '"나는 내 단점보다 장점이 더 잘 보여"', options: [
+      { score: 1, text: '단점 확대 렌즈 장착 상태' },
+      { score: 2, text: '단점이 더 눈에 띔' },
+      { score: 3, text: '반반 보임' },
+      { score: 4, text: '장점이 조금 더 잘 보임' },
+      { score: 5, text: '장점 자동 하이라이트 됨' },
+    ]},
+    { text: '"나는 나 자신을 존중할 만한 사람이라고 느껴"', options: [
+      { score: 1, text: '아직은 스스로 인정 보류' },
+      { score: 2, text: '가끔 "음… 그럴 수도?"' },
+      { score: 3, text: '보통 정도로 인정' },
+      { score: 4, text: '꽤 존중할 만한 사람이라 느낌' },
+      { score: 5, text: '"나 존중 안 하면 손해" 수준' },
+    ]},
+    { text: '"나는 앞으로도 잘 해낼 수 있을 것 같다는 생각이 들어"', options: [
+      { score: 1, text: '미래 생각하면 약간 정지 화면' },
+      { score: 2, text: '살짝 걱정이 앞섬' },
+      { score: 3, text: '그냥 평범하게는 할 듯' },
+      { score: 4, text: '꽤 잘할 것 같은 느낌 있음' },
+      { score: 5, text: '미래? 그냥 내가 뚫고 감' },
+    ]},
+    { text: '"나는 전반적으로 나 자신에게 만족해"', options: [
+      { score: 1, text: '아직 만족 버튼 OFF 상태' },
+      { score: 2, text: '조금은 괜찮은데 아쉬움 많음' },
+      { score: 3, text: '보통 정도 만족' },
+      { score: 4, text: '꽤 만족하는 편' },
+      { score: 5, text: '"나 지금 꽤 괜찮은 인생 중"' },
+    ]},
+  ];
 
-let currentQ = 0;
-let answers = [];
-const totalQ = questions.length;
-let transitioning = false;
+  const profiles = [
+    {
+      range: [10, 19], emoji: '🪫', level: '자존감 저하 상태',
+      quote: '자기 인식이 많이 부정적으로 기울어진 상태예요',
+      traits: ['스스로를 부정적으로 보는 경향이 있어요', '장점보다 단점이 더 크게 느껴지곤 해요', '비교 상황에서 쉽게 위축되는 편이에요', '"나는 부족하다"는 생각이 기본값처럼 작동해요'],
+      coaching: ['작은 성공 경험을 매일 "기록"하는 게 중요해요', '비교 대신 "어제의 나" 기준으로 평가해보세요', '장점은 발견이 아니라 연습해서 보이게 만드는 거예요'],
+      zoneIdx: 0,
+    },
+    {
+      range: [20, 29], emoji: '💛', level: '불안정 자존감 상태',
+      quote: '상황에 따라 흔들리는 자존감이에요',
+      traits: ['사람, 성취, 분위기에 따라 자존감이 오르내려요', '가끔은 괜찮지만 기본 안정감은 아직 약한 편이에요', '자존감이 "형성 중"이지만 아직 고정되지 않은 상태예요'],
+      coaching: ['외부 평가보다 내 스스로의 기준을 만들어보세요', '"나는 어떤 상황에서 흔들리는가?" 인식이 중요해요', '자기 확신을 감정이 아니라 습관으로 만들어가 보세요'],
+      zoneIdx: 1,
+    },
+    {
+      range: [30, 39], emoji: '🌤', level: '평균 자존감 상태',
+      quote: '평균적으로 안정된 자존감이에요',
+      traits: ['자신에 대한 기본 인식은 비교적 안정적이에요', '단점과 장점을 균형 있게 보는 편이에요', '스트레스 상황에서만 살짝 흔들리는 편이에요'],
+      coaching: ['기반이 충분히 안정적이에요, 잘 하고 있어요!', '중요한 건 "흔들릴 때 회복 속도"예요', '자기평가를 너무 엄격하게만 하지 않아도 괜찮아요'],
+      zoneIdx: 2,
+    },
+    {
+      range: [40, 44], emoji: '🌿', level: '안정 자존감 상태',
+      quote: '꽤 단단한 자존감 구조예요',
+      traits: ['스스로에 대한 긍정 인식이 안정적이에요', '비교 상황에서도 크게 흔들리지 않는 편이에요', '실패를 자책보다 경험으로 해석하는 경향이 있어요'],
+      coaching: ['지금의 자기 인식 유지가 핵심이에요', '타인의 평가보다 자기 기준 중심을 유지하세요', '과한 자기비판만 조심하면 매우 건강한 상태예요'],
+      zoneIdx: 3,
+    },
+    {
+      range: [45, 50], emoji: '✨', level: '매우 높은 자존감 상태',
+      quote: '자기 확신이 안정적으로 자리 잡은 상태예요',
+      traits: ['자신에 대한 긍정적 인식이 매우 강한 편이에요', '실패에도 자아 가치가 크게 흔들리지 않아요', '자기 효능감이 높고 안정적으로 내면화된 상태예요'],
+      coaching: ['건강한 수준의 자신감을 잘 유지하고 있어요', '"타인 공감 균형" 유지가 중요한 포인트예요', '자기 확신이 타인 무시로 흐르지 않게만 주의하면 완벽해요'],
+      zoneIdx: 4,
+    },
+  ];
 
-function updateDots() {
-  const dots = document.getElementById('step-dots');
-  dots.innerHTML = '';
-  if (currentQ >= 0 && currentQ < totalQ) {
-    for (let i = 0; i < totalQ; i++) {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === currentQ ? ' active' : (i < currentQ ? ' done' : ''));
-      dots.appendChild(d);
+  let currentQ = 0;
+  let answers = [];
+  const totalQ = questions.length;
+  let transitioning = false;
+
+  function updateDots() {
+    const dots = document.getElementById('step-dots');
+    dots.innerHTML = '';
+    if (currentQ >= 0 && currentQ < totalQ) {
+      for (let i = 0; i < totalQ; i++) {
+        const d = document.createElement('div');
+        d.className = 'dot' + (i === currentQ ? ' active' : (i < currentQ ? ' done' : ''));
+        dots.appendChild(d);
+      }
     }
   }
-}
 
-function startSurvey() {
-  document.getElementById('survey-list').style.display = 'none';
-  document.getElementById('survey-screen').style.display = 'block';
-  currentQ = 0;
-  answers = [];
-  renderQuestion();
-}
+  function startSurvey() {
+    document.getElementById('survey-list').style.display = 'none';
+    document.getElementById('survey-screen').style.display = 'block';
+    currentQ = 0;
+    answers = [];
+    renderQuestion();
+  }
 
-function renderQuestion() {
-  transitioning = false;
-  updateDots();
-  const q = questions[currentQ];
-  const pct = (currentQ / totalQ) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = currentQ + ' / ' + totalQ + ' 완료';
-  document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
-  document.getElementById('q-text').textContent = q.text;
+  function renderQuestion() {
+    transitioning = false;
+    updateDots();
+    const q = questions[currentQ];
+    const pct = (currentQ / totalQ) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = currentQ + ' / ' + totalQ + ' 완료';
+    document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
+    document.getElementById('q-text').textContent = q.text;
 
-  const list = document.getElementById('options-list');
-  list.innerHTML = '';
-  q.options.forEach(opt => {
-    const btn = document.createElement('button');
-    const isSelected = answers[currentQ] === opt.score;
-    btn.className = 'option-btn' + (isSelected ? ' selected' : '');
-    btn.innerHTML = '<span class="option-score">' + opt.score + '</span><span>' + opt.text + '</span>';
-    btn.onclick = () => selectOption(opt.score, btn);
-    list.appendChild(btn);
-  });
+    const list = document.getElementById('options-list');
+    list.innerHTML = '';
+    q.options.forEach(opt => {
+      const btn = document.createElement('button');
+      const isSelected = answers[currentQ] === opt.score;
+      btn.className = 'option-btn' + (isSelected ? ' selected' : '');
+      btn.innerHTML = '<span class="option-score">' + opt.score + '</span><span>' + opt.text + '</span>';
+      btn.onclick = () => selectOption(opt.score, btn);
+      list.appendChild(btn);
+    });
 
-  document.getElementById('btn-back').style.display = currentQ === 0 ? 'none' : '';
+    document.getElementById('btn-back').style.display = currentQ === 0 ? 'none' : '';
 
-  const card = document.getElementById('question-card');
-  card.style.animation = 'none';
-  void card.offsetWidth;
-  card.style.animation = '';
-}
+    const card = document.getElementById('question-card');
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = '';
+  }
 
-function selectOption(score, clickedBtn) {
-  if (transitioning) return;
-  answers[currentQ] = score;
+  function selectOption(score, clickedBtn) {
+    if (transitioning) return;
+    answers[currentQ] = score;
 
-  // 선택된 버튼 시각 피드백
-  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-  clickedBtn.classList.add('selected');
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    clickedBtn.classList.add('selected');
 
-  transitioning = true;
+    transitioning = true;
+    setTimeout(() => {
+      if (currentQ === totalQ - 1) {
+        showResult();
+      } else {
+        currentQ++;
+        renderQuestion();
+      }
+    }, 320);
+  }
 
-  // 짧은 딜레이 후 자동 이동
-  setTimeout(() => {
-    if (currentQ === totalQ - 1) {
-      showResult();
+  function goBack() {
+    if (currentQ > 0) { currentQ--; renderQuestion(); }
+  }
+
+  function showResult() {
+    document.getElementById('survey-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('step-dots').innerHTML = '';
+
+    const total = answers.reduce((a, b) => a + b, 0);
+    const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
+
+    document.getElementById('res-emoji').textContent = profile.emoji;
+    document.getElementById('res-score').innerHTML = total + '<span> / 50</span>';
+    document.getElementById('res-level').textContent = profile.level;
+    document.getElementById('res-quote').textContent = profile.quote;
+
+    const pct = ((total - 10) / 40) * 100;
+    setTimeout(() => { document.getElementById('score-bar').style.width = pct + '%'; }, 100);
+
+    document.querySelectorAll('.zone').forEach((z, i) => z.classList.toggle('active', i === profile.zoneIdx));
+
+    const traitsEl = document.getElementById('res-traits');
+    traitsEl.innerHTML = '';
+    profile.traits.forEach(t => {
+      traitsEl.innerHTML += '<div class="trait-item"><div class="trait-dot"></div><span>' + t + '</span></div>';
+    });
+
+    const coachingEl = document.getElementById('res-coaching');
+    coachingEl.innerHTML = '';
+    profile.coaching.forEach((c, i) => {
+      coachingEl.innerHTML += '<div class="coaching-item"><div class="coaching-num">' + (i + 1) + '</div><span>' + c + '</span></div>';
+    });
+  }
+
+  function shareResult() {
+    const total = answers.reduce((a, b) => a + b, 0);
+    const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
+    const text =
+      '🪞 자존감 척도 테스트 결과\n\n'
+      + profile.emoji + ' ' + total + '점 / 50점\n'
+      + '"' + profile.level + '"\n\n'
+      + profile.quote
+      + '\n\n나도 해보기 → ' + SITE_URL;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text)
+        .then(showToast)
+        .catch(() => fallbackCopy(text));
     } else {
-      currentQ++;
-      renderQuestion();
+      fallbackCopy(text);
     }
-  }, 320);
-}
+  }
 
-function goBack() {
-  if (currentQ > 0) { currentQ--; renderQuestion(); }
-}
+  function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      const ok = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (ok) { showToast(); } else { showShareModal(text); }
+    } catch (e) {
+      document.body.removeChild(textarea);
+      showShareModal(text);
+    }
+  }
 
-function showResult() {
-  document.getElementById('survey-screen').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'block';
-  document.getElementById('step-dots').innerHTML = '';
+  function showShareModal(text) {
+    const overlay = document.createElement('div');
+    overlay.className = 'share-modal-overlay';
+    overlay.innerHTML =
+      '<div class="share-modal">'
+      + '<p>📋 아래 텍스트를 복사해서 공유하세요!</p>'
+      + '<textarea readonly>' + text + '</textarea>'
+      + '<button onclick="this.closest(\'.share-modal-overlay\').remove()">닫기</button>'
+      + '</div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector('textarea').select();
+  }
 
-  const total = answers.reduce((a, b) => a + b, 0);
-  const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.textContent = '✅ 결과가 클립보드에 복사됐어요!';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
 
-  document.getElementById('res-emoji').textContent = profile.emoji;
-  document.getElementById('res-score').innerHTML = total + '<span> / 50</span>';
-  document.getElementById('res-level').textContent = profile.level;
-  document.getElementById('res-quote').textContent = profile.quote;
+  function retryAll() {
+    document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('survey-list').style.display = 'block';
+    document.getElementById('step-dots').innerHTML = '';
+    answers = [];
+    currentQ = 0;
+  }
 
-  const pct = ((total - 10) / 40) * 100;
-  setTimeout(() => { document.getElementById('score-bar').style.width = pct + '%'; }, 100);
-
-  document.querySelectorAll('.zone').forEach((z, i) => z.classList.toggle('active', i === profile.zoneIdx));
-
-  const traitsEl = document.getElementById('res-traits');
-  traitsEl.innerHTML = '';
-  profile.traits.forEach(t => {
-    traitsEl.innerHTML += '<div class="trait-item"><div class="trait-dot"></div><span>' + t + '</span></div>';
-  });
-
-  const coachingEl = document.getElementById('res-coaching');
-  coachingEl.innerHTML = '';
-  profile.coaching.forEach((c, i) => {
-    coachingEl.innerHTML += '<div class="coaching-item"><div class="coaching-num">' + (i+1) + '</div><span>' + c + '</span></div>';
-  });
-}
-
-function shareResult() {
-  const total = answers.reduce((a, b) => a + b, 0);
-  const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
-  const text = '🪞 자존감 척도 테스트 결과\n\n' + profile.emoji + ' ' + total + '점 / 50점\n"' + profile.level + '"\n\n' + profile.quote + '\n\n나도 해보기 → 마음연구소 설문 참여하기';
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(showToast);
-  } else { showToast(); }
-}
-
-function showToast() {
-  const t = document.getElementById('toast');
-  t.textContent = '✅ 결과가 클립보드에 복사됐어요!';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-function retryAll() {
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('survey-list').style.display = 'block';
-  document.getElementById('step-dots').innerHTML = '';
-}
-
-updateDots();
+  updateDots();
 </script>
+</body>
+</html>
