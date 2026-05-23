@@ -536,23 +536,32 @@
   }
 
   function shareResult() {
-    const total = answers.reduce((a, b) => a + b, 0);
-    const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
-    const text =
-      '🪞 자존감 척도 테스트 결과\n\n'
-      + profile.emoji + ' ' + total + '점 / 50점\n'
-      + '"' + profile.level + '"\n\n'
-      + profile.quote
-      + '\n\n나도 해보기 → ' + SITE_URL;
+  const total = answers.reduce((a, b) => a + b, 0);
+  const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
+  const text =
+    '🪞 자존감 척도 테스트 결과\n\n'
+    + profile.emoji + ' ' + total + '점 / 50점\n'
+    + '"' + profile.level + '"\n\n'
+    + profile.quote
+    + '\n\n나도 해보기 → ' + SITE_URL;
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text)
-        .then(showToast)
-        .catch(() => fallbackCopy(text));
-    } else {
-      fallbackCopy(text);
-    }
-  }
+  // 모바일 등 Web Share API 지원 환경 → 기본 공유 시트
+  if (navigator.share) {
+		navigator.share({
+		  title: '🪞 자존감 척도 테스트 결과',
+		  text: text,
+		}).catch(() => {}); // 사용자가 취소해도 에러 무시
+	  } else {
+		// PC 등 미지원 환경 → 클립보드 복사
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+		  navigator.clipboard.writeText(text)
+			.then(showToast)
+			.catch(() => fallbackCopy(text));
+		} else {
+		  fallbackCopy(text);
+		}
+	  }
+	}
 
   function fallbackCopy(text) {
     const textarea = document.createElement('textarea');
