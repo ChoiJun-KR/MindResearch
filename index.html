@@ -9,606 +9,657 @@
   <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@300;400;700&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --primary: #FF6B6B;
-      --primary-light: #FFE0E0;
-      --accent: #FFD93D;
-      --bg: #FFF9F5;
-      --card-bg: #FFFFFF;
-      --text: #2D2D2D;
-      --text-muted: #888;
-      --radius: 20px;
-      --shadow: 0 4px 24px rgba(255,107,107,0.10);
+      --primary: #FF6B6B; --primary-light: #FFE0E0;
+      --secondary: #845EC2; --secondary-light: #EDE0FF;
+      --teal: #00B4A2; --teal-light: #D0F5F2;
+      --bg: #FFF9F5; --text: #2D2D2D; --text-muted: #888;
+      --radius: 20px; --shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
+    html, body { background: var(--bg); font-family: 'Nanum Gothic', sans-serif; color: var(--text); min-height: 100vh; }
+    #app { max-width: 680px; margin: 0 auto; padding: 0 0 4rem; }
 
-    html, body {
-      background: var(--bg);
-      font-family: 'Nanum Gothic', sans-serif;
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    #app {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 0 4rem;
-    }
-
-    /* ── HEADER ── */
-    .site-header {
-      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-      border-radius: 0 0 32px 32px;
-      padding: 2rem 1.5rem 2.5rem;
-      text-align: center;
-      color: white;
-      margin-bottom: 2rem;
-    }
-    .site-header .logo {
-      font-size: 13px; font-weight: 700; letter-spacing: 3px;
-      opacity: 0.85; margin-bottom: 0.5rem; text-transform: uppercase;
-    }
-    .site-header h1 {
-      font-family: 'Gmarket Sans', sans-serif;
-      font-size: 26px; font-weight: 700; line-height: 1.3; margin-bottom: 0.5rem;
-    }
+    /* HEADER */
+    .site-header { background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); border-radius: 0 0 32px 32px; padding: 2rem 1.5rem 2.5rem; text-align: center; color: white; margin-bottom: 2rem; transition: background 0.4s; }
+    .site-header.purple { background: linear-gradient(135deg, #845EC2 0%, #B39CD0 100%); }
+    .site-header.teal { background: linear-gradient(135deg, #00B4A2 0%, #00D4C0 100%); }
+    .site-header .logo { font-size: 13px; font-weight: 700; letter-spacing: 3px; opacity: 0.85; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .site-header h1 { font-family: 'Gmarket Sans', sans-serif; font-size: 26px; font-weight: 700; line-height: 1.3; margin-bottom: 0.5rem; }
     .site-header p { font-size: 14px; opacity: 0.9; }
-    .dot-row { display: flex; justify-content: center; gap: 6px; margin-top: 1.2rem; }
+    .dot-row { display: flex; justify-content: center; gap: 6px; margin-top: 1.2rem; flex-wrap: wrap; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: all 0.3s; }
     .dot.active { background: white; transform: scale(1.3); }
     .dot.done { background: rgba(255,255,255,0.7); }
 
-    /* ── SURVEY LIST ── */
+    /* SURVEY LIST */
     #survey-list { padding: 0 1rem; }
-    .section-title {
-      font-size: 13px; font-weight: 700; letter-spacing: 2px;
-      color: var(--primary); text-transform: uppercase; margin-bottom: 1rem;
-    }
-    .survey-card {
-      background: white; border-radius: var(--radius); padding: 1.25rem 1.5rem;
-      margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;
-      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-      border: 2px solid transparent; box-shadow: var(--shadow);
-    }
+    .section-title { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; margin-bottom: 1rem; }
+    .survey-card { background: white; border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 2px solid transparent; box-shadow: var(--shadow); }
     .survey-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,107,107,0.18); border-color: var(--primary-light); }
+    .survey-card.purple-card:hover { box-shadow: 0 8px 32px rgba(132,94,194,0.18); border-color: var(--secondary-light); }
+    .survey-card.teal-card:hover { box-shadow: 0 8px 32px rgba(0,180,162,0.18); border-color: var(--teal-light); }
     .survey-card.locked { cursor: default; opacity: 0.5; }
     .survey-card.locked:hover { transform: none; box-shadow: var(--shadow); border-color: transparent; }
     .survey-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
     .survey-icon.pink { background: #FFE0E0; }
+    .survey-icon.purple-bg { background: var(--secondary-light); }
+    .survey-icon.teal-bg { background: var(--teal-light); }
     .survey-icon.gray { background: #F0F0F0; }
     .survey-card-info { flex: 1; }
     .survey-card-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
     .survey-card-info p { font-size: 13px; color: var(--text-muted); }
     .survey-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
     .badge-available { background: #FFE0E0; color: var(--primary); }
+    .badge-available.purple { background: var(--secondary-light); color: var(--secondary); }
+    .badge-available.teal { background: var(--teal-light); color: var(--teal); }
     .badge-coming { background: #F0F0F0; color: #aaa; }
 
-    /* ── SURVEY SCREEN ── */
+    /* SURVEY SCREEN */
     #survey-screen { display: none; padding: 0 1rem; }
     .progress-bar-wrap { background: #FFE0E0; border-radius: 99px; height: 8px; margin-bottom: 0.5rem; overflow: hidden; }
+    .progress-bar-wrap.purple { background: var(--secondary-light); }
+    .progress-bar-wrap.teal { background: var(--teal-light); }
     .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #FF6B6B, #FF8E53); border-radius: 99px; transition: width 0.4s ease; }
+    .progress-bar-fill.purple { background: linear-gradient(90deg, #845EC2, #B39CD0); }
+    .progress-bar-fill.teal { background: linear-gradient(90deg, #00B4A2, #00D4C0); }
     .progress-label { font-size: 12px; color: var(--text-muted); text-align: right; margin-bottom: 1.5rem; }
-
-    .question-card {
-      background: white; border-radius: var(--radius); padding: 1.75rem 1.5rem;
-      box-shadow: var(--shadow); margin-bottom: 1.5rem;
-      animation: slideIn 0.35s ease;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .question-card { background: white; border-radius: var(--radius); padding: 1.75rem 1.5rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; animation: slideIn 0.35s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     .q-number { font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: 2px; margin-bottom: 0.6rem; text-transform: uppercase; }
+    .q-number.purple { color: var(--secondary); }
+    .q-number.teal { color: var(--teal); }
     .q-text { font-size: 17px; font-weight: 700; line-height: 1.5; margin-bottom: 1.5rem; }
 
+    /* 4점/5점 척도 옵션 */
     .options-list { display: flex; flex-direction: column; gap: 10px; }
-    .option-btn {
-      background: #FFF9F5; border: 2px solid #F0E8E0; border-radius: 14px;
-      padding: 0.9rem 1.1rem; text-align: left; cursor: pointer;
-      transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px;
-      font-family: 'Nanum Gothic', sans-serif; font-size: 14px; line-height: 1.5; color: var(--text);
-    }
+    .option-btn { background: #FFF9F5; border: 2px solid #F0E8E0; border-radius: 14px; padding: 0.9rem 1.1rem; text-align: left; cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px; font-family: 'Nanum Gothic', sans-serif; font-size: 14px; line-height: 1.5; color: var(--text); }
     .option-btn:hover { border-color: var(--primary); background: #FFF0F0; transform: translateX(4px); }
     .option-btn.selected { border-color: var(--primary); background: #FFE0E0; color: #CC3333; transform: translateX(4px); }
-    .option-score { font-weight: 700; font-size: 15px; min-width: 20px; color: var(--primary); opacity: 0.6; margin-top: 1px; }
+    .option-btn.teal-opt:hover { border-color: var(--teal); background: #E8FFFE; transform: translateX(4px); }
+    .option-btn.teal-opt.selected { border-color: var(--teal); background: var(--teal-light); color: #006B62; transform: translateX(4px); }
+    .option-score { font-weight: 700; font-size: 15px; min-width: 20px; color: var(--primary); opacity: 0.55; margin-top: 1px; }
     .option-btn.selected .option-score { opacity: 1; }
+    .option-btn.teal-opt .option-score { color: var(--teal); }
+
+    /* A/B 옵션 */
+    .ab-options { display: flex; flex-direction: column; gap: 12px; }
+    .ab-btn { background: #FAFAFA; border: 2px solid #EAEAEA; border-radius: 14px; padding: 1rem 1.2rem; text-align: left; cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 12px; font-family: 'Nanum Gothic', sans-serif; font-size: 14px; line-height: 1.6; color: var(--text); }
+    .ab-btn:hover { border-color: var(--secondary); background: #F5F0FF; transform: translateX(4px); }
+    .ab-btn.selected { border-color: var(--secondary); background: var(--secondary-light); color: #5a3d8a; transform: translateX(4px); }
+    .ab-label { font-weight: 800; font-size: 16px; color: var(--secondary); opacity: 0.45; flex-shrink: 0; margin-top: 1px; min-width: 18px; }
+    .ab-btn.selected .ab-label { opacity: 1; }
 
     .hint-text { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 0.5rem; opacity: 0.8; }
-    .btn-back {
-      padding: 0.9rem 1.4rem; border-radius: 14px;
-      font-family: 'Nanum Gothic', sans-serif; font-size: 15px; font-weight: 700;
-      cursor: pointer; transition: all 0.2s; border: 2px solid;
-      background: white; border-color: #E0D8D0; color: var(--text-muted);
-    }
+    .btn-back { padding: 0.9rem 1.4rem; border-radius: 14px; font-family: 'Nanum Gothic', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; border: 2px solid; background: white; border-color: #E0D8D0; color: var(--text-muted); }
     .btn-back:hover { border-color: #aaa; color: var(--text); }
 
-    /* ── RESULT SCREEN ── */
+    /* RESULT */
     #result-screen { display: none; padding: 0 1rem; }
-
-    .result-hero {
-      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-      border-radius: 28px; padding: 2rem 1.5rem; text-align: center;
-      color: white; margin-bottom: 1.25rem; position: relative; overflow: hidden;
-    }
+    .result-hero { background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); border-radius: 28px; padding: 2rem 1.5rem; text-align: center; color: white; margin-bottom: 1.25rem; position: relative; overflow: hidden; }
+    .result-hero.purple { background: linear-gradient(135deg, #845EC2 0%, #B39CD0 100%); }
+    .result-hero.teal { background: linear-gradient(135deg, #00B4A2 0%, #00D4C0 100%); }
     .result-hero::before { content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.1); top: -60px; right: -60px; }
     .result-hero::after { content: ''; position: absolute; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.07); bottom: -50px; left: -40px; }
     .result-emoji { font-size: 52px; margin-bottom: 0.5rem; }
     .result-score-label { font-size: 12px; opacity: 0.85; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
-    .result-score { font-family: 'Gmarket Sans', sans-serif; font-size: 56px; font-weight: 700; line-height: 1; margin: 0.2rem 0; }
-    .result-score span { font-size: 22px; opacity: 0.8; }
+    .result-score { font-family: 'Gmarket Sans', sans-serif; font-size: 52px; font-weight: 700; line-height: 1; margin: 0.2rem 0; }
+    .result-score span { font-size: 20px; opacity: 0.8; }
     .result-level { font-size: 18px; font-weight: 700; margin-top: 0.5rem; }
+    .result-sublevel { font-size: 13px; opacity: 0.85; margin-top: 0.3rem; }
+    .result-keywords { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }
+    .result-kw { background: rgba(255,255,255,0.2); border-radius: 99px; padding: 3px 10px; font-size: 12px; font-weight: 700; }
 
     .result-card { background: white; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1rem; }
     .result-card h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; margin-bottom: 1rem; }
-    .result-quote { font-size: 16px; font-weight: 700; line-height: 1.6; color: #333; background: #FFF5F5; border-left: 3px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 12px 12px 0; margin-bottom: 1rem; }
+    .result-card h3.purple { color: var(--secondary); }
+    .result-card h3.teal { color: var(--teal); }
+    .result-quote { font-size: 15px; font-weight: 700; line-height: 1.6; color: #333; background: #FFF5F5; border-left: 3px solid var(--primary); padding: 1rem 1.2rem; border-radius: 0 12px 12px 0; margin-bottom: 1rem; }
+    .result-quote.purple { background: #F5F0FF; border-left-color: var(--secondary); }
+    .result-quote.teal { background: #E8FFFE; border-left-color: var(--teal); }
     .result-traits { display: flex; flex-direction: column; gap: 8px; }
     .trait-item { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; line-height: 1.5; color: #555; }
     .trait-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 6px; }
+    .trait-dot.purple { background: var(--secondary); }
+    .trait-dot.teal { background: var(--teal); }
 
     .coaching-card { background: linear-gradient(135deg, #FFF9F5 0%, #FFF0E8 100%); border-radius: var(--radius); padding: 1.5rem; border: 2px solid #FFE0D0; margin-bottom: 1rem; }
+    .coaching-card.purple { background: linear-gradient(135deg, #F8F5FF 0%, #EDE0FF 100%); border-color: #D4BBFF; }
+    .coaching-card.teal { background: linear-gradient(135deg, #F0FFFE 0%, #D0F5F2 100%); border-color: #A0E8E2; }
     .coaching-card h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #FF8E53; text-transform: uppercase; margin-bottom: 1rem; }
+    .coaching-card.purple h3 { color: var(--secondary); }
+    .coaching-card.teal h3 { color: var(--teal); }
     .coaching-item { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.6; color: #555; align-items: flex-start; }
     .coaching-num { background: #FF8E53; color: white; font-weight: 700; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .coaching-num.purple { background: var(--secondary); }
+    .coaching-num.teal { background: var(--teal); }
+
+    /* 애착유형 전용: 유형 점수 그리드 */
+    .attach-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0; }
+    .attach-score-item { background: #FAFAFA; border-radius: 14px; padding: 0.9rem 1rem; border: 2px solid #EAEAEA; }
+    .attach-score-item.dominant { border-color: var(--teal); background: var(--teal-light); }
+    .attach-score-name { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
+    .attach-score-item.dominant .attach-score-name { color: var(--teal); }
+    .attach-score-bar-bg { background: #E0E0E0; border-radius: 99px; height: 6px; margin-bottom: 4px; overflow: hidden; }
+    .attach-score-bar-fg { height: 100%; border-radius: 99px; background: #ccc; transition: width 0.8s ease; }
+    .attach-score-item.dominant .attach-score-bar-fg { background: linear-gradient(90deg, #00B4A2, #00D4C0); }
+    .attach-score-val { font-size: 13px; font-weight: 700; color: #888; }
+    .attach-score-item.dominant .attach-score-val { color: var(--teal); }
+
+    .remember-card { background: #F8F8F8; border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; border: 2px solid #EBEBEB; }
+    .remember-card h3 { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #666; text-transform: uppercase; margin-bottom: 0.8rem; }
+    .remember-card p { font-size: 13px; line-height: 1.9; color: #666; }
 
     .action-row { display: flex; gap: 10px; margin-bottom: 1rem; }
-    .btn-share, .btn-retry {
-      flex: 1; padding: 1rem; border-radius: 14px;
-      font-family: 'Nanum Gothic', sans-serif; font-size: 14px; font-weight: 700;
-      cursor: pointer; border: 2px solid; transition: all 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
+    .btn-share, .btn-retry { flex: 1; padding: 1rem; border-radius: 14px; font-family: 'Nanum Gothic', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; border: 2px solid; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .btn-share { background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-color: transparent; color: white; }
+    .btn-share.purple { background: linear-gradient(135deg, #845EC2, #B39CD0); }
+    .btn-share.teal { background: linear-gradient(135deg, #00B4A2, #00D4C0); }
     .btn-share:hover { opacity: 0.9; }
     .btn-retry { background: white; border-color: #E0D8D0; color: var(--text-muted); }
     .btn-retry:hover { border-color: var(--primary); color: var(--primary); }
-
     .more-surveys-section { margin-top: 2rem; }
 
     .score-bar-wrap { margin: 1rem 0; }
     .score-bar-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
     .score-bar-bg { background: #F0E8E0; border-radius: 99px; height: 12px; overflow: hidden; }
+    .score-bar-bg.purple { background: #EDE0FF; }
+    .score-bar-bg.teal { background: var(--teal-light); }
     .score-bar-fg { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #FF6B6B, #FF8E53); transition: width 1s ease; }
+    .score-bar-fg.purple { background: linear-gradient(90deg, #845EC2, #B39CD0); }
+    .score-bar-fg.teal { background: linear-gradient(90deg, #00B4A2, #00D4C0); }
     .score-zones { display: flex; gap: 4px; margin-top: 8px; }
-    .zone { flex: 1; text-align: center; font-size: 10px; padding: 3px 2px; border-radius: 6px; font-weight: 700; opacity: 0.7; }
+    .zone { flex: 1; text-align: center; font-size: 10px; padding: 4px 2px; border-radius: 6px; font-weight: 700; opacity: 0.6; transition: all 0.3s; white-space: pre; line-height: 1.4; }
     .zone.active { opacity: 1; transform: scale(1.05); }
 
-    /* ── TOAST ── */
-    #toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #333; color: white; padding: 12px 24px;
-      border-radius: 99px; font-size: 14px; font-weight: 700;
-      transition: transform 0.3s; z-index: 999; pointer-events: none; white-space: nowrap;
-    }
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #333; color: white; padding: 12px 24px; border-radius: 99px; font-size: 14px; font-weight: 700; transition: transform 0.3s; z-index: 999; pointer-events: none; white-space: nowrap; }
     #toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ── SHARE MODAL ── */
-    .share-modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;
-    }
-    .share-modal {
-      background: white; border-radius: 20px; padding: 1.5rem;
-      max-width: 400px; width: 100%;
-    }
+    .share-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .share-modal { background: white; border-radius: 20px; padding: 1.5rem; max-width: 400px; width: 100%; }
     .share-modal p { font-weight: 700; font-size: 15px; margin-bottom: 1rem; }
-    .share-modal textarea {
-      width: 100%; height: 140px; border: 2px solid #FFE0E0;
-      border-radius: 12px; padding: 0.8rem; font-size: 13px;
-      resize: none; font-family: 'Nanum Gothic', sans-serif; line-height: 1.6;
-    }
-    .share-modal button {
-      margin-top: 1rem; width: 100%; padding: 0.8rem;
-      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-      color: white; border: none; border-radius: 12px;
-      font-weight: 700; font-size: 15px; cursor: pointer;
-      font-family: 'Nanum Gothic', sans-serif;
-    }
+    .share-modal textarea { width: 100%; height: 160px; border: 2px solid #FFE0E0; border-radius: 12px; padding: 0.8rem; font-size: 13px; resize: none; font-family: 'Nanum Gothic', sans-serif; line-height: 1.6; }
+    .share-modal button { margin-top: 1rem; width: 100%; padding: 0.8rem; background: linear-gradient(135deg, #FF6B6B, #FF8E53); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: 'Nanum Gothic', sans-serif; }
   </style>
 </head>
 <body>
-
 <div id="app">
-  <div class="site-header">
+  <div class="site-header" id="site-header">
     <div class="logo">🏫 마음연구소</div>
-    <h1>나를 알아가는 시간 ✨</h1>
-    <p>가볍게, 재밌게, 나 자신을 탐색해봐요</p>
+    <h1 id="header-title">나를 알아가는 시간 ✨</h1>
+    <p id="header-sub">가볍게, 재밌게, 나 자신을 탐색해봐요</p>
     <div class="dot-row" id="step-dots"></div>
   </div>
 
-  <!-- 설문 목록 -->
   <div id="survey-list">
     <div class="section-title">📋 설문 목록</div>
-    <div class="survey-card" onclick="startSurvey()">
+    <div class="survey-card" onclick="startSurvey(0)">
       <div class="survey-icon pink">🪞</div>
-      <div class="survey-card-info">
-        <h3>자존감 척도 테스트</h3>
-        <p>나는 나 자신을 얼마나 인정하고 있을까? · 10문항</p>
-      </div>
+      <div class="survey-card-info"><h3>자존감 척도 테스트</h3><p>나는 나 자신을 얼마나 인정하고 있을까? · 10문항</p></div>
       <span class="survey-badge badge-available">시작하기</span>
     </div>
-    <div class="survey-card locked">
-      <div class="survey-icon gray">🧩</div>
-      <div class="survey-card-info"><h3>두 번째 설문</h3><p>곧 공개됩니다</p></div>
-      <span class="survey-badge badge-coming">준비 중</span>
+    <div class="survey-card purple-card" onclick="startSurvey(1)">
+      <div class="survey-icon purple-bg">🌀</div>
+      <div class="survey-card-info"><h3>나르시시즘 성향 테스트</h3><p>내 안의 자기애 성향, 어느 정도일까? · 40문항</p></div>
+      <span class="survey-badge badge-available purple">시작하기</span>
     </div>
-    <div class="survey-card locked">
-      <div class="survey-icon gray">💫</div>
-      <div class="survey-card-info"><h3>세 번째 설문</h3><p>곧 공개됩니다</p></div>
-      <span class="survey-badge badge-coming">준비 중</span>
+    <div class="survey-card teal-card" onclick="startSurvey(2)">
+      <div class="survey-icon teal-bg">💞</div>
+      <div class="survey-card-info"><h3>연애 애착 유형 검사</h3><p>내 연애 패턴, 어떤 애착 유형일까? · 16문항</p></div>
+      <span class="survey-badge badge-available teal">시작하기</span>
     </div>
   </div>
 
-  <!-- 설문 진행 -->
   <div id="survey-screen">
-    <div class="progress-bar-wrap">
+    <div class="progress-bar-wrap" id="progress-wrap">
       <div class="progress-bar-fill" id="progress-fill"></div>
     </div>
     <div class="progress-label" id="progress-label"></div>
-
     <div class="question-card" id="question-card">
       <div class="q-number" id="q-number"></div>
       <div class="q-text" id="q-text"></div>
-      <div class="options-list" id="options-list"></div>
+      <div id="options-container"></div>
     </div>
-
     <p class="hint-text">선택하면 자동으로 다음 문항으로 넘어가요</p>
     <button class="btn-back" id="btn-back" onclick="goBack()">◀ 이전으로</button>
   </div>
 
-  <!-- 결과 화면 -->
   <div id="result-screen">
-    <div class="result-hero">
+    <div class="result-hero" id="result-hero">
       <div class="result-emoji" id="res-emoji"></div>
-      <div class="result-score-label">내 자존감 점수</div>
+      <div class="result-score-label" id="res-score-label">내 점수</div>
       <div class="result-score" id="res-score"></div>
       <div class="result-level" id="res-level"></div>
+      <div class="result-sublevel" id="res-sublevel"></div>
+      <div class="result-keywords" id="res-keywords"></div>
+    </div>
+
+    <div class="result-card" id="res-dist-card">
+      <h3 id="res-dist-title">📊 점수 분포</h3>
+      <div id="res-dist-body"></div>
     </div>
 
     <div class="result-card">
-      <h3>📊 점수 분포</h3>
-      <div class="score-bar-wrap">
-        <div class="score-bar-labels"><span>10점</span><span>50점</span></div>
-        <div class="score-bar-bg"><div class="score-bar-fg" id="score-bar" style="width:0%"></div></div>
-      </div>
-      <div class="score-zones" id="score-zones">
-        <div class="zone" style="background:#FFE0E0;color:#CC3333;">🪫<br>저하</div>
-        <div class="zone" style="background:#FFE8CC;color:#CC6600;">💛<br>불안정</div>
-        <div class="zone" style="background:#FFF3CC;color:#CC9900;">🌤<br>평균</div>
-        <div class="zone" style="background:#E0F0E0;color:#336633;">🌿<br>안정</div>
-        <div class="zone" style="background:#E0E8FF;color:#333399;">✨<br>매우높음</div>
-      </div>
-    </div>
-
-    <div class="result-card">
-      <h3>💬 한 줄 요약</h3>
+      <h3 id="res-summary-title">💬 유형 특징</h3>
       <div class="result-quote" id="res-quote"></div>
       <div class="result-traits" id="res-traits"></div>
     </div>
 
-    <div class="coaching-card">
-      <h3>🌱 코칭 메시지</h3>
+    <div class="coaching-card" id="res-coaching-card">
+      <h3 id="res-coaching-title">🌱 코칭 메시지</h3>
       <div id="res-coaching"></div>
     </div>
 
+    <div class="remember-card" id="res-remember-card" style="display:none;">
+      <h3>📌 꼭 기억할 점</h3>
+      <p id="res-remember-text"></p>
+    </div>
+
     <div class="action-row">
-      <button class="btn-share" onclick="shareResult()">📤 결과 공유하기</button>
+      <button class="btn-share" id="btn-share" onclick="shareResult()">📤 결과 공유하기</button>
       <button class="btn-retry" onclick="retryAll()">🔄 다시 하기</button>
     </div>
 
     <div class="more-surveys-section">
       <div class="section-title">📋 다른 설문도 해볼까요?</div>
-      <div class="survey-card locked">
-        <div class="survey-icon gray">🧩</div>
-        <div class="survey-card-info"><h3>두 번째 설문</h3><p>곧 공개됩니다!</p></div>
-        <span class="survey-badge badge-coming">준비 중</span>
-      </div>
-      <div class="survey-card locked">
-        <div class="survey-icon gray">💫</div>
-        <div class="survey-card-info"><h3>세 번째 설문</h3><p>곧 공개됩니다!</p></div>
-        <span class="survey-badge badge-coming">준비 중</span>
-      </div>
+      <div id="more-survey-list"></div>
     </div>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script>
-  const SITE_URL = 'https://choijun-kr.github.io/MindResearch/';
+const SITE_URL = 'https://choijun-kr.github.io/MindResearch/';
 
-  const questions = [
-    { text: '"나는 나 자신이 꽤 괜찮은 사람이야"', options: [
-      { score: 1, text: '나? 솔직히 아직은 "음… 리셋 필요" 상태' },
-      { score: 2, text: '가끔 보면 "나도 나쁘진 않네?" 정도' },
-      { score: 3, text: '평타는 치는 나, 인정' },
-      { score: 4, text: '"나 꽤 괜찮은데?" 생각 자주 함' },
-      { score: 5, text: '나 = 꽤 괜찮은 사람 확정 (내적 합의 완료!!)' },
-    ]},
-    { text: '"나는 나에게 좋은 점이 많이 있다고 생각해"', options: [
-      { score: 1, text: '장점 찾기 미션 실패 상태' },
-      { score: 2, text: '한두 개는… 어딘가 있을지도?' },
-      { score: 3, text: '평균 정도는 있는 듯' },
-      { score: 4, text: '"나 은근 괜찮은데?" 자주 느낌' },
-      { score: 5, text: '장점 리스트 쓰면 A4 꽉 참' },
-    ]},
-    { text: '"나는 다른 사람들과 비교해도 크게 밀리지 않는 사람이야"', options: [
-      { score: 1, text: '비교하면 바로 멘탈 로그아웃' },
-      { score: 2, text: '비교하면 살짝 작아짐' },
-      { score: 3, text: '그냥 비슷한 느낌' },
-      { score: 4, text: '"나 생각보다 괜찮네?" 구간' },
-      { score: 5, text: '비교? 오히려 내가 기준 되는 편' },
-    ]},
-    { text: '"나는 나 자신을 대체로 좋아하는 편이야"', options: [
-      { score: 1, text: '나랑 좀 어색한 사이' },
-      { score: 2, text: '아직 친해지는 중' },
-      { score: 3, text: '그냥 보통 친구 정도' },
-      { score: 4, text: '꽤 괜찮은 사이' },
-      { score: 5, text: '거의 찐친 + 내 편 확정' },
-    ]},
-    { text: '"나는 내가 하는 일에 어느 정도 자신이 있어"', options: [
-      { score: 1, text: '시작 전에 이미 불안 ON' },
-      { score: 2, text: '"일단 해보긴 하는데…" 상태' },
-      { score: 3, text: '평균적인 자신감' },
-      { score: 4, text: '"이 정도는 나 가능"' },
-      { score: 5, text: '대부분 "나 믿고 가" 모드' },
-    ]},
-    { text: '"나는 나도 충분히 가치 있는 사람이라고 생각해"', options: [
-      { score: 1, text: '나… 가치 계산이 잘 안 됨' },
-      { score: 2, text: '가끔은 의문이 듦' },
-      { score: 3, text: '그냥 평균적인 존재라고 느낌' },
-      { score: 4, text: '나 꽤 의미 있는 사람임' },
-      { score: 5, text: '"나 존재 자체가 가치 있음" 확신' },
-    ]},
-    { text: '"나는 내 단점보다 장점이 더 잘 보여"', options: [
-      { score: 1, text: '단점 확대 렌즈 장착 상태' },
-      { score: 2, text: '단점이 더 눈에 띔' },
-      { score: 3, text: '반반 보임' },
-      { score: 4, text: '장점이 조금 더 잘 보임' },
-      { score: 5, text: '장점 자동 하이라이트 됨' },
-    ]},
-    { text: '"나는 나 자신을 존중할 만한 사람이라고 느껴"', options: [
-      { score: 1, text: '아직은 스스로 인정 보류' },
-      { score: 2, text: '가끔 "음… 그럴 수도?"' },
-      { score: 3, text: '보통 정도로 인정' },
-      { score: 4, text: '꽤 존중할 만한 사람이라 느낌' },
-      { score: 5, text: '"나 존중 안 하면 손해" 수준' },
-    ]},
-    { text: '"나는 앞으로도 잘 해낼 수 있을 것 같다는 생각이 들어"', options: [
-      { score: 1, text: '미래 생각하면 약간 정지 화면' },
-      { score: 2, text: '살짝 걱정이 앞섬' },
-      { score: 3, text: '그냥 평범하게는 할 듯' },
-      { score: 4, text: '꽤 잘할 것 같은 느낌 있음' },
-      { score: 5, text: '미래? 그냥 내가 뚫고 감' },
-    ]},
-    { text: '"나는 전반적으로 나 자신에게 만족해"', options: [
-      { score: 1, text: '아직 만족 버튼 OFF 상태' },
-      { score: 2, text: '조금은 괜찮은데 아쉬움 많음' },
-      { score: 3, text: '보통 정도 만족' },
-      { score: 4, text: '꽤 만족하는 편' },
-      { score: 5, text: '"나 지금 꽤 괜찮은 인생 중"' },
-    ]},
-  ];
+/* ===================== SURVEY 0: 자존감 척도 ===================== */
+const survey0 = {
+  id:0, title:'자존감 척도 테스트', emoji:'🪞', color:'red', type:'scale',
+  questions:[
+    {text:'"나는 나 자신이 꽤 괜찮은 사람이야"',options:[{score:1,text:'나? 솔직히 아직은 "음… 리셋 필요" 상태'},{score:2,text:'가끔 보면 "나도 나쁘진 않네?" 정도'},{score:3,text:'평타는 치는 나, 인정'},{score:4,text:'"나 꽤 괜찮은데?" 생각 자주 함'},{score:5,text:'나 = 꽤 괜찮은 사람 확정 (내적 합의 완료!!)'}]},
+    {text:'"나는 나에게 좋은 점이 많이 있다고 생각해"',options:[{score:1,text:'장점 찾기 미션 실패 상태'},{score:2,text:'한두 개는… 어딘가 있을지도?'},{score:3,text:'평균 정도는 있는 듯'},{score:4,text:'"나 은근 괜찮은데?" 자주 느낌'},{score:5,text:'장점 리스트 쓰면 A4 꽉 참'}]},
+    {text:'"나는 다른 사람들과 비교해도 크게 밀리지 않는 사람이야"',options:[{score:1,text:'비교하면 바로 멘탈 로그아웃'},{score:2,text:'비교하면 살짝 작아짐'},{score:3,text:'그냥 비슷한 느낌'},{score:4,text:'"나 생각보다 괜찮네?" 구간'},{score:5,text:'비교? 오히려 내가 기준 되는 편'}]},
+    {text:'"나는 나 자신을 대체로 좋아하는 편이야"',options:[{score:1,text:'나랑 좀 어색한 사이'},{score:2,text:'아직 친해지는 중'},{score:3,text:'그냥 보통 친구 정도'},{score:4,text:'꽤 괜찮은 사이'},{score:5,text:'거의 찐친 + 내 편 확정'}]},
+    {text:'"나는 내가 하는 일에 어느 정도 자신이 있어"',options:[{score:1,text:'시작 전에 이미 불안 ON'},{score:2,text:'"일단 해보긴 하는데…" 상태'},{score:3,text:'평균적인 자신감'},{score:4,text:'"이 정도는 나 가능"'},{score:5,text:'대부분 "나 믿고 가" 모드'}]},
+    {text:'"나는 나도 충분히 가치 있는 사람이라고 생각해"',options:[{score:1,text:'나… 가치 계산이 잘 안 됨'},{score:2,text:'가끔은 의문이 듦'},{score:3,text:'그냥 평균적인 존재라고 느낌'},{score:4,text:'나 꽤 의미 있는 사람임'},{score:5,text:'"나 존재 자체가 가치 있음" 확신'}]},
+    {text:'"나는 내 단점보다 장점이 더 잘 보여"',options:[{score:1,text:'단점 확대 렌즈 장착 상태'},{score:2,text:'단점이 더 눈에 띔'},{score:3,text:'반반 보임'},{score:4,text:'장점이 조금 더 잘 보임'},{score:5,text:'장점 자동 하이라이트 됨'}]},
+    {text:'"나는 나 자신을 존중할 만한 사람이라고 느껴"',options:[{score:1,text:'아직은 스스로 인정 보류'},{score:2,text:'가끔 "음… 그럴 수도?"'},{score:3,text:'보통 정도로 인정'},{score:4,text:'꽤 존중할 만한 사람이라 느낌'},{score:5,text:'"나 존중 안 하면 손해" 수준'}]},
+    {text:'"나는 앞으로도 잘 해낼 수 있을 것 같다는 생각이 들어"',options:[{score:1,text:'미래 생각하면 약간 정지 화면'},{score:2,text:'살짝 걱정이 앞섬'},{score:3,text:'그냥 평범하게는 할 듯'},{score:4,text:'꽤 잘할 것 같은 느낌 있음'},{score:5,text:'미래? 그냥 내가 뚫고 감'}]},
+    {text:'"나는 전반적으로 나 자신에게 만족해"',options:[{score:1,text:'아직 만족 버튼 OFF 상태'},{score:2,text:'조금은 괜찮은데 아쉬움 많음'},{score:3,text:'보통 정도 만족'},{score:4,text:'꽤 만족하는 편'},{score:5,text:'"나 지금 꽤 괜찮은 인생 중"'}]},
+  ],
+  profiles:[
+    {range:[10,19],emoji:'🪫',level:'자존감 저하 상태',sublevel:'',keywords:[],quote:'자기 인식이 많이 부정적으로 기울어진 상태예요',traits:['스스로를 부정적으로 보는 경향이 있어요','장점보다 단점이 더 크게 느껴지곤 해요','비교 상황에서 쉽게 위축되는 편이에요','"나는 부족하다"는 생각이 기본값처럼 작동해요'],coaching:['작은 성공 경험을 매일 "기록"하는 게 중요해요','비교 대신 "어제의 나" 기준으로 평가해보세요','장점은 발견이 아니라 연습해서 보이게 만드는 거예요'],zoneIdx:0},
+    {range:[20,29],emoji:'💛',level:'불안정 자존감 상태',sublevel:'',keywords:[],quote:'상황에 따라 흔들리는 자존감이에요',traits:['사람, 성취, 분위기에 따라 자존감이 오르내려요','가끔은 괜찮지만 기본 안정감은 아직 약한 편이에요','자존감이 "형성 중"이지만 아직 고정되지 않은 상태예요'],coaching:['외부 평가보다 내 스스로의 기준을 만들어보세요','"나는 어떤 상황에서 흔들리는가?" 인식이 중요해요','자기 확신을 감정이 아니라 습관으로 만들어가 보세요'],zoneIdx:1},
+    {range:[30,39],emoji:'🌤',level:'평균 자존감 상태',sublevel:'',keywords:[],quote:'평균적으로 안정된 자존감이에요',traits:['자신에 대한 기본 인식은 비교적 안정적이에요','단점과 장점을 균형 있게 보는 편이에요','스트레스 상황에서만 살짝 흔들리는 편이에요'],coaching:['기반이 충분히 안정적이에요, 잘 하고 있어요!','중요한 건 "흔들릴 때 회복 속도"예요','자기평가를 너무 엄격하게만 하지 않아도 괜찮아요'],zoneIdx:2},
+    {range:[40,44],emoji:'🌿',level:'안정 자존감 상태',sublevel:'',keywords:[],quote:'꽤 단단한 자존감 구조예요',traits:['스스로에 대한 긍정 인식이 안정적이에요','비교 상황에서도 크게 흔들리지 않는 편이에요','실패를 자책보다 경험으로 해석하는 경향이 있어요'],coaching:['지금의 자기 인식 유지가 핵심이에요','타인의 평가보다 자기 기준 중심을 유지하세요','과한 자기비판만 조심하면 매우 건강한 상태예요'],zoneIdx:3},
+    {range:[45,50],emoji:'✨',level:'매우 높은 자존감 상태',sublevel:'',keywords:[],quote:'자기 확신이 안정적으로 자리 잡은 상태예요',traits:['자신에 대한 긍정적 인식이 매우 강한 편이에요','실패에도 자아 가치가 크게 흔들리지 않아요','자기 효능감이 높고 안정적으로 내면화된 상태예요'],coaching:['건강한 수준의 자신감을 잘 유지하고 있어요','"타인 공감 균형" 유지가 중요한 포인트예요','자기 확신이 타인 무시로 흐르지 않게만 주의하면 완벽해요'],zoneIdx:4},
+  ],
+  scoreLabel:'내 자존감 점수', barMin:10, barMax:50,
+  zones:[{label:'🪫\n저하',bg:'#FFE0E0',color:'#CC3333'},{label:'💛\n불안정',bg:'#FFE8CC',color:'#CC6600'},{label:'🌤\n평균',bg:'#FFF3CC',color:'#CC9900'},{label:'🌿\n안정',bg:'#E0F0E0',color:'#336633'},{label:'✨\n매우높음',bg:'#E0E8FF',color:'#333399'}],
+  showRemember:false, rememberText:'',
+};
 
-  const profiles = [
-    {
-      range: [10, 19], emoji: '🪫', level: '자존감 저하 상태',
-      quote: '자기 인식이 많이 부정적으로 기울어진 상태예요',
-      traits: ['스스로를 부정적으로 보는 경향이 있어요', '장점보다 단점이 더 크게 느껴지곤 해요', '비교 상황에서 쉽게 위축되는 편이에요', '"나는 부족하다"는 생각이 기본값처럼 작동해요'],
-      coaching: ['작은 성공 경험을 매일 "기록"하는 게 중요해요', '비교 대신 "어제의 나" 기준으로 평가해보세요', '장점은 발견이 아니라 연습해서 보이게 만드는 거예요'],
-      zoneIdx: 0,
-    },
-    {
-      range: [20, 29], emoji: '💛', level: '불안정 자존감 상태',
-      quote: '상황에 따라 흔들리는 자존감이에요',
-      traits: ['사람, 성취, 분위기에 따라 자존감이 오르내려요', '가끔은 괜찮지만 기본 안정감은 아직 약한 편이에요', '자존감이 "형성 중"이지만 아직 고정되지 않은 상태예요'],
-      coaching: ['외부 평가보다 내 스스로의 기준을 만들어보세요', '"나는 어떤 상황에서 흔들리는가?" 인식이 중요해요', '자기 확신을 감정이 아니라 습관으로 만들어가 보세요'],
-      zoneIdx: 1,
-    },
-    {
-      range: [30, 39], emoji: '🌤', level: '평균 자존감 상태',
-      quote: '평균적으로 안정된 자존감이에요',
-      traits: ['자신에 대한 기본 인식은 비교적 안정적이에요', '단점과 장점을 균형 있게 보는 편이에요', '스트레스 상황에서만 살짝 흔들리는 편이에요'],
-      coaching: ['기반이 충분히 안정적이에요, 잘 하고 있어요!', '중요한 건 "흔들릴 때 회복 속도"예요', '자기평가를 너무 엄격하게만 하지 않아도 괜찮아요'],
-      zoneIdx: 2,
-    },
-    {
-      range: [40, 44], emoji: '🌿', level: '안정 자존감 상태',
-      quote: '꽤 단단한 자존감 구조예요',
-      traits: ['스스로에 대한 긍정 인식이 안정적이에요', '비교 상황에서도 크게 흔들리지 않는 편이에요', '실패를 자책보다 경험으로 해석하는 경향이 있어요'],
-      coaching: ['지금의 자기 인식 유지가 핵심이에요', '타인의 평가보다 자기 기준 중심을 유지하세요', '과한 자기비판만 조심하면 매우 건강한 상태예요'],
-      zoneIdx: 3,
-    },
-    {
-      range: [45, 50], emoji: '✨', level: '매우 높은 자존감 상태',
-      quote: '자기 확신이 안정적으로 자리 잡은 상태예요',
-      traits: ['자신에 대한 긍정적 인식이 매우 강한 편이에요', '실패에도 자아 가치가 크게 흔들리지 않아요', '자기 효능감이 높고 안정적으로 내면화된 상태예요'],
-      coaching: ['건강한 수준의 자신감을 잘 유지하고 있어요', '"타인 공감 균형" 유지가 중요한 포인트예요', '자기 확신이 타인 무시로 흐르지 않게만 주의하면 완벽해요'],
-      zoneIdx: 4,
-    },
-  ];
+/* ===================== SURVEY 1: 나르시시즘 ===================== */
+const survey1 = {
+  id:1, title:'나르시시즘 성향 테스트', emoji:'🌀', color:'purple', type:'ab',
+  questions:[
+    {text:'사람들 분위기?',options:[{label:'A',text:'은근 내가 좌우하는 편',score:1},{label:'B',text:'나는 존재감 강한 스타일은 아니다',score:0}]},
+    {text:'겸손함에 대해',options:[{label:'A',text:'너무 겸손한 캐릭터는 솔직히 내 스타일 아님',score:1},{label:'B',text:'나는 적당히 겸손한 편이다',score:0}]},
+    {text:'행동 스타일',options:[{label:'A',text:'일단 질러보고 본다',score:1},{label:'B',text:'신중하게 생각하고 움직인다',score:0}]},
+    {text:'칭찬을 들으면',options:[{label:'A',text:'주변에서 괜찮다고 하니까 나도 인정함',score:1},{label:'B',text:'칭찬 들으면 아직도 좀 민망하다',score:0}]},
+    {text:'세상 운영 상상해보면',options:[{label:'A',text:'내가 세상 운영하면 지금보다 나을 듯',score:1},{label:'B',text:'세상 운영? 생각만 해도 부담됨',score:0}]},
+    {text:'분위기 조율',options:[{label:'A',text:'설득해서 분위기 내 쪽으로 만드는 거 가능',score:1},{label:'B',text:'결과는 그냥 내가 책임지는 편',score:0}]},
+    {text:'주목받는 자리',options:[{label:'A',text:'사람들 시선 받는 자리 은근 좋음',score:1},{label:'B',text:'그냥 조용히 섞여 있는 게 편함',score:0}]},
+    {text:'성공에 대해',options:[{label:'A',text:'나는 결국 성공할 사람 같다',score:1},{label:'B',text:'성공 자체가 인생의 최우선은 아니다',score:0}]},
+    {text:'나는 어떤 사람?',options:[{label:'A',text:'나는 뭔가 특별한 구석이 있다',score:1},{label:'B',text:'그냥 평범한 사람 중 한 명이다',score:0}]},
+    {text:'팀 리더 역할',options:[{label:'A',text:'내가 팀장하면 꽤 잘 굴러갈 듯',score:1},{label:'B',text:'리더 역할은 아직 자신 없다',score:0}]},
+    {text:'말하는 스타일',options:[{label:'A',text:'할 말은 하는 스타일이다',score:1},{label:'B',text:'좀 더 당당했으면 좋겠다고 느낀다',score:0}]},
+    {text:'영향력에 대해',options:[{label:'A',text:'영향력 있는 위치가 좋다',score:1},{label:'B',text:'누가 리드하든 크게 상관없다',score:0}]},
+    {text:'사람 심리 읽기',options:[{label:'A',text:'사람 심리 읽고 흐름 바꾸는 거 어렵지 않다',score:1},{label:'B',text:'사람 조종하는 느낌은 별로다',score:0}]},
+    {text:'대우 받는 것',options:[{label:'A',text:'나는 좋은 대우를 받을 자격이 있다고 생각한다',score:1},{label:'B',text:'대체로 받은 만큼 만족한다',score:0}]},
+    {text:'내 장점 드러내기',options:[{label:'A',text:'내 비주얼/피지컬 장점은 은근 드러내는 편',score:1},{label:'B',text:'굳이 티내진 않는다',score:0}]},
+    {text:'사람 마음 캐치',options:[{label:'A',text:'사람 속마음 캐치 잘하는 편',score:1},{label:'B',text:'사람 마음은 아직도 어렵다',score:0}]},
+    {text:'중요한 결정',options:[{label:'A',text:'중요한 결정은 내가 직접 하는 게 좋다',score:1},{label:'B',text:'잘 아는 부분만 책임지는 게 편하다',score:0}]},
+    {text:'타인의 평가',options:[{label:'A',text:'사람들에게 "와 저 사람 대단하다" 소리 듣고 싶다',score:1},{label:'B',text:'그냥 적당히 행복하면 충분하다',score:0}]},
+    {text:'내 외모',options:[{label:'A',text:'내 모습 보는 거 싫지 않다',score:1},{label:'B',text:'외모 자신감은 평범한 편이다',score:0}]},
+    {text:'장점 표현',options:[{label:'A',text:'내 장점은 기회 되면 보여주는 편',score:1},{label:'B',text:'자랑은 최대한 안 하려 한다',score:0}]},
+    {text:'내 방향성',options:[{label:'A',text:'나는 내가 뭘 하는지 꽤 확실히 안다',score:1},{label:'B',text:'가끔은 방향 헷갈릴 때도 있다',score:0}]},
+    {text:'문제 해결',options:[{label:'A',text:'웬만한 건 혼자 해결 가능',score:1},{label:'B',text:'필요하면 도움 요청하는 편이다',score:0}]},
+    {text:'대화할 때',options:[{label:'A',text:'내 얘기 듣는 거 사람들이 좋아한다고 느낀다',score:1},{label:'B',text:'나는 남 챙기는 게 더 좋다',score:0}]},
+    {text:'타인에 대해',options:[{label:'A',text:'사람들에게 기대 수준이 높은 편이다',score:1},{label:'B',text:'나는 남을 도와주는 게 더 중요하다',score:0}]},
+    {text:'만족감',options:[{label:'A',text:'내가 원하는 걸 얻기 전엔 잘 만족 못 한다',score:1},{label:'B',text:'충분하면 만족하는 편이다',score:0}]},
+    {text:'칭찬 반응',options:[{label:'A',text:'칭찬 받으면 기분 좋다',score:1},{label:'B',text:'칭찬 받으면 좀 어색하다',score:0}]},
+    {text:'권력/영향력',options:[{label:'A',text:'영향력/권력 욕심이 있다',score:1},{label:'B',text:'권력 자체엔 별 관심 없다',score:0}]},
+    {text:'트렌드',options:[{label:'A',text:'트렌드 리더 느낌 좋아함',score:1},{label:'B',text:'유행엔 크게 관심 없다',score:0}]},
+    {text:'거울 보기',options:[{label:'A',text:'거울 보는 거 은근 좋아함',score:1},{label:'B',text:'거울 잘 안 본다',score:0}]},
+    {text:'관심 집중',options:[{label:'A',text:'사람들 관심 집중되는 거 좋다',score:1},{label:'B',text:'관심 집중되면 부담스럽다',score:0}]},
+    {text:'내 미래',options:[{label:'A',text:'결국 내 인생은 내가 원하는 방향으로 간다',score:1},{label:'B',text:'현실은 늘 마음대로 되진 않는다',score:0}]},
+    {text:'존재감/권위',options:[{label:'A',text:'사람들은 내 존재감/권위를 인정해 주는 편',score:1},{label:'B',text:'권위 자체가 중요하진 않다',score:0}]},
+    {text:'리더 역할',options:[{label:'A',text:'리더 역할 맡는 게 좋다',score:1},{label:'B',text:'앞에 서든 아니든 상관없다',score:0}]},
+    {text:'크게 될 것 같은가',options:[{label:'A',text:'나는 크게 될 사람 같다',score:1},{label:'B',text:'그냥 안정적으로 잘 살고 싶다',score:0}]},
+    {text:'설득력',options:[{label:'A',text:'사람들을 설득하는 데 자신 있다',score:1},{label:'B',text:'내 말이 먹힐 때도 있고 아닐 때도 있다',score:0}]},
+    {text:'리더십 기질',options:[{label:'A',text:'나는 원래 리더 기질이 있다',score:1},{label:'B',text:'리더십은 경험으로 배우는 거다',score:0}]},
+    {text:'내 인생은',options:[{label:'A',text:'내 인생… 다큐 찍어도 재밌을 듯',score:1},{label:'B',text:'사생활 공개는 싫다',score:0}]},
+    {text:'시선을 못 받으면',options:[{label:'A',text:'사람들 시선 못 받으면 좀 아쉽다',score:1},{label:'B',text:'조용히 지나가도 괜찮다',score:0}]},
+    {text:'유능함',options:[{label:'A',text:'나는 평균 이상으로 유능한 편이다',score:1},{label:'B',text:'다른 사람에게 배울 점도 많다',score:0}]},
+    {text:'나는 평범한가',options:[{label:'A',text:'나는 평범하진 않은 사람 같다',score:1},{label:'B',text:'나는 대부분 사람들과 비슷하다',score:0}]},
+  ],
+  profiles:[
+    {range:[0,7],emoji:'😶',level:'"자기애 OFF 모드"',sublevel:'조용히 살고 싶은 NPC형',keywords:[],quote:'자기확신보다 자기검열이 강한 편이에요',traits:['자신을 낮게 평가하는 경향이 있어요','칭찬을 받아도 잘 믿지 못하는 편이에요','비교·위축·눈치가 심해질 수 있어요','인정욕구는 있지만 표현을 억누르는 편이에요'],coaching:['자기비난 줄이기: "왜 난 이것밖에?" 대신 "지금 힘든 상태구나"로 바꾸기','작은 자기표현 연습: 의견 말하기, 거절하기, 내 취향 드러내기','칭찬 저장 습관: "에이 아니야" 대신 "고마워" 연습하기','비교 끊기 훈련: 어제의 나 vs 오늘의 나 기록하기'],zoneIdx:0},
+    {range:[8,22],emoji:'😊',level:'"건강한 자기애 밸런스형"',sublevel:'나 꽤 괜찮은 메인캐릭터!',keywords:[],quote:'자신감과 겸손의 균형이 비교적 안정적인 상태예요',traits:['자기표현 능력도 무난한 편이에요','대인관계 적응력이 안정적이에요','타인 공감 능력이 유지되는 편이에요','인정욕구와 현실감각이 균형적이에요'],coaching:['잘한 일은 인정하고 성취를 축소하지 말기','관심받고 싶은 욕구를 부끄러워하지 않기','착한 사람 역할만 하지 않고 경계 설정 연습하기'],zoneIdx:1},
+    {range:[23,29],emoji:'🌟',level:'"주인공 재질형"',sublevel:'분위기? 내가 만들면 됨!',keywords:[],quote:'존재감 욕구와 인정욕구가 강한 편이에요',traits:['성취욕·리더욕이 큰 편이에요','비판·무시에 민감할 수 있어요','인정받지 못하면 감정이 다운될 수 있어요','비교 경쟁 스트레스가 증가할 수 있어요'],coaching:['성과 = 내 가치가 아니라는 연습이 필요해요','내 이야기보다 상대 감정 먼저 듣는 연습을 해보세요','피드백 = 공격이 아님, 실수해도 가치가 사라지는 건 아님'],zoneIdx:2},
+    {range:[30,40],emoji:'👑',level:'"메인캐릭터 몰입형"',sublevel:'세상아… 나 중심으로 돌아가!',keywords:[],quote:'자기확신·우월감·주목욕구가 매우 강한 편이에요',traits:['리더십 욕구, 권력과 경쟁심이 강한 편이에요','무시당한다고 느끼면 강한 분노/수치감이 올 수 있어요','내면엔 불안정한 자존감이 숨어있을 수 있어요','관계를 경쟁처럼 느끼는 경향이 있어요'],coaching:['"특별해야만 가치 있다"는 믿음 점검하기, 존재 자체의 가치 회복','상대 감정 인정하기: "내가 맞다"보다 "상대는 어떻게 느꼈을까?" 연습','자기애 뒤에 숨은 수치심 다루기: 무시→분노 패턴 탐색하기','인정받기보다 이해받기 연습, 약한 모습 드러내는 연습'],zoneIdx:3},
+  ],
+  scoreLabel:'내 나르시시즘 점수', barMin:0, barMax:40,
+  zones:[{label:'😶\nOFF모드',bg:'#E8E8FF',color:'#4444AA'},{label:'😊\n밸런스형',bg:'#E0F0E0',color:'#336633'},{label:'🌟\n주인공형',bg:'#FFF3CC',color:'#CC9900'},{label:'👑\n몰입형',bg:'#F5E0FF',color:'#7700AA'}],
+  showRemember:true,
+  rememberText:'자기애는 무조건 나쁜 것이 아닙니다. 적절한 자기애는 자신감, 성취욕, 자기보호, 리더십, 자존감의 기반이 됩니다.\n\n문제는 인정 없이는 내가 무너질 때, 비판을 견디지 못할 때, 관계보다 우월감을 더 중요하게 느낄 때입니다.\n\n핵심은 "자기애를 없애기"가 아니라 "안정적인 자기존중감으로 성장시키기"입니다.',
+};
 
-  let currentQ = 0;
-  let answers = [];
-  const totalQ = questions.length;
-  let transitioning = false;
+/* ===================== SURVEY 2: 연애 애착 유형 ===================== */
+const survey2 = {
+  id:2, title:'연애 애착 유형 검사', emoji:'💞', color:'teal', type:'attach',
+  questions:[
+    {text:'나는 연애에서 내 감정과 생각을 편하게 표현하는 편이다',group:'secure',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'연애 중 갈등이 생겨도 잘 해결될 수 있다고 느낀다',group:'secure',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'연인이 있어도 혼자만의 시간이 편안하다',group:'secure',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'관계 속에서도 나 자신을 잃지 않는 편이다',group:'secure',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'상대의 연락이나 반응이 늦어지면 불안해진다',group:'anxious',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'상대의 말이나 행동에 의미를 많이 부여하는 편이다',group:'anxious',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'사랑받고 있다는 확신이 자주 필요하다',group:'anxious',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'관계가 멀어질까 봐 걱정하는 경우가 많다',group:'anxious',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'연애에서 감정을 깊게 나누는 것이 부담스럽다',group:'avoidant',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'누군가에게 의지하는 것이 편하지 않다',group:'avoidant',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'연애에서도 개인적인 공간과 시간이 매우 중요하다',group:'avoidant',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'관계가 가까워질수록 거리 두고 싶어질 때가 있다',group:'avoidant',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'연애에서 내 감정이 자주 바뀌는 편이다',group:'disorganized',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'가까워지고 싶다가도 갑자기 멀어지고 싶어진다',group:'disorganized',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'연애에서 안정감과 자유 사이에서 자주 고민한다',group:'disorganized',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+    {text:'상대를 좋아하면서도 동시에 부담을 느낄 때가 있다',group:'disorganized',options:[{score:1,text:'전혀 그렇지 않다'},{score:2,text:'별로 그렇지 않다'},{score:3,text:'어느 정도 그렇다'},{score:4,text:'매우 그렇다'}]},
+  ],
+  attachProfiles:{
+    secure:  {name:'안정 애착형',  emoji:'💚', summary:'연애를 가장 현실적으로 잘하는 타입', traits:['감정 표현이 자연스럽고 억지 없음','싸움이 생겨도 관계 유지를 우선시함','혼자 있어도 불안하지 않음','상대에게 과도하게 기대지 않음'], note:'상대가 불안형이면 "너무 무심하다"는 오해 가능', coaching:['감정 표현을 조금 더 자주 해보세요','상대의 불안 신호를 먼저 알아차리는 연습','편안함을 관계의 강점으로 유지하기']},
+    anxious: {name:'불안 애착형',  emoji:'💛', summary:'사랑을 확인받아야 안정되는 타입', traits:['연락 속도에 감정이 크게 흔들림','상대 반응을 의미 분석하는 편','애정 표현을 자주 필요로 함','관계 안정감이 감정 상태에 영향'], note:'생각이 많아지면 감정 과열됨', coaching:['"확인 요구" 대신 "요청 방식"으로 바꾸기: "왜 답장 안 해?" → "나 조금 불안해졌어"','불안이 올라올 때 잠깐 멈추고 감정 이름 붙이기','상대 반응보다 내 감정 기준 세우는 연습']},
+    avoidant:{name:'회피 애착형',  emoji:'💙', summary:'사랑하지만 공간이 있어야 유지되는 타입', traits:['감정 표현이 적고 조용한 편','혼자 있는 시간이 매우 중요함','의존 상황을 부담스러워함','친밀감이 높아질수록 거리 두기 발생'], note:'상대가 불안형이면 갈등 발생 확률 높음', coaching:['감정 공유를 "설명"이 아니라 "짧은 표현"부터 시작','상대의 연결 욕구를 거부가 아닌 신호로 받아들이기','가까워지는 것 = 자유를 잃는 것이 아님을 연습']},
+    disorganized:{name:'혼란 애착형', emoji:'🩶', summary:'사랑이 안정되지 않고 계속 재설정되는 타입', traits:['감정 기복이 관계에 따라 크게 변함','좋아하다가 갑자기 식는 느낌 경험','친밀감과 거리감 사이에서 계속 흔들림','안정된 관계에서도 불안/혼란 반복'], note:'본인도 감정 패턴을 예측하기 어려움', coaching:['감정 판단 전에 "시간 지연 반응" 훈련','내 감정 패턴 일기 쓰기: "언제 멀어지고 싶어지는가"','안전한 관계 경험을 천천히 쌓아가는 것이 핵심']},
+  },
+  mixedProfiles:[
+    {cond:(s)=>s.anxious>=3.0&&s.avoidant>=3.0, key:'anxious_avoidant', emoji:'🌀', name:'혼합형 · 불안+회피', summary:'다가가고 싶은데 가까우면 불안한 타입', keywords:['#밀당아님','#자동충돌형'], traits:['연락은 원하지만 부담도 느낌','관계 시작과 회피가 동시에 존재','애정 욕구 vs 거리 욕구 충돌'], coaching:['두 감정이 동시에 올 때 어느 쪽이 더 큰지 확인하기','파트너와 감정 패턴에 대해 솔직하게 나눠보기','전문 상담을 통한 패턴 탐색이 도움될 수 있어요']},
+    {cond:(s)=>s.secure>=3.0&&s.anxious>=2.5&&s.anxious<3.0, key:'secure_anxious', emoji:'🌿', name:'혼합형 · 안정+약간불안', summary:'괜찮은데 가끔 흔들리는 타입', keywords:['#기본안정','#가끔불안'], traits:['기본적으로 안정적','특정 상황에서 감정 불안 발생','상대 반응에 민감해질 때 있음'], coaching:['어떤 상황에서 흔들리는지 패턴 파악하기','흔들릴 때 자기 진정 루틴 만들기','안정적인 기반을 믿고 불안에 과반응하지 않기']},
+    {cond:(s)=>s.anxious>=2.5&&s.disorganized>=2.5, key:'anxious_disorganized', emoji:'🌪', name:'혼합형 · 불안+혼란', summary:'감정 롤러코스터형', keywords:['#감정과부하'], traits:['좋아했다가 불안했다가 반복','관계 확신이 감정 안정과 직결','감정 해석이 매우 빠름'], coaching:['감정 일기로 패턴 시각화하기','과거 관계 경험이 현재에 미치는 영향 탐색','감정 강도가 높을 때는 반응 보류하기']},
+  ],
+  scoreLabel:'내 애착 유형', barMin:1, barMax:4,
+  showRemember:false, rememberText:'',
+};
 
-  function updateDots() {
-    const dots = document.getElementById('step-dots');
-    dots.innerHTML = '';
-    if (currentQ >= 0 && currentQ < totalQ) {
-      for (let i = 0; i < totalQ; i++) {
-        const d = document.createElement('div');
-        d.className = 'dot' + (i === currentQ ? ' active' : (i < currentQ ? ' done' : ''));
-        dots.appendChild(d);
-      }
-    }
+const surveys = [survey0, survey1, survey2];
+let currentSurvey=null, currentQ=0, answers=[], transitioning=false;
+
+/* ===================== 시작 ===================== */
+function startSurvey(idx) {
+  currentSurvey=surveys[idx]; currentQ=0; answers=[]; transitioning=false;
+  const c=currentSurvey.color;
+  document.getElementById('site-header').className='site-header'+(c==='purple'?' purple':c==='teal'?' teal':'');
+  document.getElementById('header-title').textContent=currentSurvey.title;
+  document.getElementById('header-sub').textContent='총 '+currentSurvey.questions.length+'문항 · 선택하면 자동으로 넘어가요';
+  document.getElementById('survey-list').style.display='none';
+  document.getElementById('survey-screen').style.display='block';
+  document.getElementById('progress-wrap').className='progress-bar-wrap'+(c==='purple'?' purple':c==='teal'?' teal':'');
+  document.getElementById('progress-fill').className='progress-bar-fill'+(c==='purple'?' purple':c==='teal'?' teal':'');
+  renderQuestion();
+}
+
+function updateDots(total) {
+  const dots=document.getElementById('step-dots'); dots.innerHTML='';
+  const maxDots=10, step=total<=maxDots?1:Math.ceil(total/maxDots);
+  for(let i=0;i<total;i+=step){
+    const d=document.createElement('div');
+    const end=Math.min(i+step-1,total-1);
+    d.className='dot'+(currentQ>=i&&currentQ<=end?' active':currentQ>end?' done':'');
+    dots.appendChild(d);
   }
+}
 
-  function startSurvey() {
-    document.getElementById('survey-list').style.display = 'none';
-    document.getElementById('survey-screen').style.display = 'block';
-    currentQ = 0;
-    answers = [];
-    renderQuestion();
-  }
+function renderQuestion() {
+  transitioning=false;
+  const q=currentSurvey.questions[currentQ], total=currentSurvey.questions.length, c=currentSurvey.color;
+  updateDots(total);
+  document.getElementById('progress-fill').style.width=(currentQ/total*100)+'%';
+  document.getElementById('progress-label').textContent=currentQ+' / '+total+' 완료';
+  const qn=document.getElementById('q-number');
+  qn.textContent='Q'+(currentQ+1); qn.className='q-number'+(c==='purple'?' purple':c==='teal'?' teal':'');
+  document.getElementById('q-text').textContent=q.text;
+  const container=document.getElementById('options-container'); container.innerHTML='';
 
-  function renderQuestion() {
-    transitioning = false;
-    updateDots();
-    const q = questions[currentQ];
-    const pct = (currentQ / totalQ) * 100;
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('progress-label').textContent = currentQ + ' / ' + totalQ + ' 완료';
-    document.getElementById('q-number').textContent = 'Q' + (currentQ + 1);
-    document.getElementById('q-text').textContent = q.text;
-
-    const list = document.getElementById('options-list');
-    list.innerHTML = '';
-    q.options.forEach(opt => {
-      const btn = document.createElement('button');
-      const isSelected = answers[currentQ] === opt.score;
-      btn.className = 'option-btn' + (isSelected ? ' selected' : '');
-      btn.innerHTML = '<span class="option-score">' + opt.score + '</span><span>' + opt.text + '</span>';
-      btn.onclick = () => selectOption(opt.score, btn);
+  if(currentSurvey.type==='ab'){
+    const list=document.createElement('div'); list.className='ab-options';
+    q.options.forEach(opt=>{
+      const btn=document.createElement('button');
+      btn.className='ab-btn'+(answers['q'+currentQ+'_label']===opt.label?' selected':'');
+      btn.innerHTML='<span class="ab-label">'+opt.label+'</span><span>'+opt.text+'</span>';
+      btn.onclick=()=>selectAB(opt.score,opt.label,btn);
       list.appendChild(btn);
     });
-
-    document.getElementById('btn-back').style.display = currentQ === 0 ? 'none' : '';
-
-    const card = document.getElementById('question-card');
-    card.style.animation = 'none';
-    void card.offsetWidth;
-    card.style.animation = '';
-  }
-
-  function selectOption(score, clickedBtn) {
-    if (transitioning) return;
-    answers[currentQ] = score;
-
-    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-    clickedBtn.classList.add('selected');
-
-    transitioning = true;
-    setTimeout(() => {
-      if (currentQ === totalQ - 1) {
-        showResult();
-      } else {
-        currentQ++;
-        renderQuestion();
-      }
-    }, 320);
-  }
-
-  function goBack() {
-    if (currentQ > 0) { currentQ--; renderQuestion(); }
-  }
-
-  function showResult() {
-    document.getElementById('survey-screen').style.display = 'none';
-    document.getElementById('result-screen').style.display = 'block';
-    document.getElementById('step-dots').innerHTML = '';
-
-    const total = answers.reduce((a, b) => a + b, 0);
-    const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
-
-    document.getElementById('res-emoji').textContent = profile.emoji;
-    document.getElementById('res-score').innerHTML = total + '<span> / 50</span>';
-    document.getElementById('res-level').textContent = profile.level;
-    document.getElementById('res-quote').textContent = profile.quote;
-
-    const pct = ((total - 10) / 40) * 100;
-    setTimeout(() => { document.getElementById('score-bar').style.width = pct + '%'; }, 100);
-
-    document.querySelectorAll('.zone').forEach((z, i) => z.classList.toggle('active', i === profile.zoneIdx));
-
-    const traitsEl = document.getElementById('res-traits');
-    traitsEl.innerHTML = '';
-    profile.traits.forEach(t => {
-      traitsEl.innerHTML += '<div class="trait-item"><div class="trait-dot"></div><span>' + t + '</span></div>';
+    container.appendChild(list);
+  } else {
+    // scale & attach 모두 동일한 옵션 UI
+    const list=document.createElement('div'); list.className='options-list';
+    q.options.forEach(opt=>{
+      const btn=document.createElement('button');
+      const isTeal=c==='teal';
+      const sel=answers[currentQ]===opt.score;
+      btn.className='option-btn'+(isTeal?' teal-opt':'')+(sel?' selected':'');
+      btn.innerHTML='<span class="option-score">'+opt.score+'</span><span>'+opt.text+'</span>';
+      btn.onclick=()=>selectScale(opt.score,btn);
+      list.appendChild(btn);
     });
+    container.appendChild(list);
+  }
+  document.getElementById('btn-back').style.display=currentQ===0?'none':'';
+  const card=document.getElementById('question-card');
+  card.style.animation='none'; void card.offsetWidth; card.style.animation='';
+}
 
-    const coachingEl = document.getElementById('res-coaching');
-    coachingEl.innerHTML = '';
-    profile.coaching.forEach((c, i) => {
-      coachingEl.innerHTML += '<div class="coaching-item"><div class="coaching-num">' + (i + 1) + '</div><span>' + c + '</span></div>';
+function selectScale(score,btn){
+  if(transitioning)return;
+  answers[currentQ]=score;
+  document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected'); transitioning=true; setTimeout(goNext,320);
+}
+function selectAB(score,label,btn){
+  if(transitioning)return;
+  answers[currentQ]=score; answers['q'+currentQ+'_label']=label;
+  document.querySelectorAll('.ab-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected'); transitioning=true; setTimeout(goNext,320);
+}
+function goNext(){ if(currentQ===currentSurvey.questions.length-1)showResult(); else{currentQ++;renderQuestion();} }
+function goBack(){ if(currentQ>0){currentQ--;renderQuestion();} }
+
+/* ===================== 결과 ===================== */
+function showResult(){
+  document.getElementById('survey-screen').style.display='none';
+  document.getElementById('result-screen').style.display='block';
+  document.getElementById('step-dots').innerHTML='';
+  const c=currentSurvey.color, isPurple=c==='purple', isTeal=c==='teal';
+  const clsAdd=isPurple?' purple':isTeal?' teal':'';
+
+  /* 점수 계산 */
+  let score=0;
+  for(let i=0;i<currentSurvey.questions.length;i++) if(typeof answers[i]==='number') score+=answers[i];
+
+  /* 애착 유형 전용 계산 */
+  let attachScores=null, profile=null, isMixed=false, mixedProfile=null;
+  if(currentSurvey.type==='attach'){
+    const qs=currentSurvey.questions;
+    const groups={secure:[],anxious:[],avoidant:[],disorganized:[]};
+    qs.forEach((q,i)=>{ if(typeof answers[i]==='number') groups[q.group].push(answers[i]); });
+    attachScores={};
+    Object.keys(groups).forEach(k=>{ attachScores[k]=groups[k].length?groups[k].reduce((a,b)=>a+b,0)/groups[k].length:1; });
+    /* 혼합형 체크 */
+    for(const mp of currentSurvey.mixedProfiles){ if(mp.cond(attachScores)){isMixed=true;mixedProfile=mp;break;} }
+    /* 주 유형 */
+    const dominant=Object.keys(attachScores).reduce((a,b)=>attachScores[a]>=attachScores[b]?a:b);
+    profile=currentSurvey.attachProfiles[dominant];
+    profile._dominant=dominant;
+    score=null;
+  } else {
+    profile=currentSurvey.profiles.find(p=>score>=p.range[0]&&score<=p.range[1]);
+  }
+
+  window._lastScore=score; window._lastProfile=profile; window._lastAttachScores=attachScores;
+  window._isMixed=isMixed; window._mixedProfile=mixedProfile;
+
+  /* 헤더 */
+  document.getElementById('result-hero').className='result-hero'+clsAdd;
+  const displayProfile=isMixed?mixedProfile:profile;
+  document.getElementById('res-emoji').textContent=displayProfile.emoji;
+  document.getElementById('res-score-label').textContent=isTeal&&attachScores?'내 주 애착 유형':'내 점수';
+
+  if(isTeal&&attachScores){
+    document.getElementById('res-score').innerHTML=displayProfile.name;
+    document.getElementById('res-score').style.fontSize='28px';
+  } else {
+    document.getElementById('res-score').style.fontSize='';
+    document.getElementById('res-score').innerHTML=score+'<span> / '+currentSurvey.barMax+'</span>';
+  }
+  document.getElementById('res-level').textContent=isMixed?mixedProfile.name:(isTeal?displayProfile.summary:profile.level);
+  document.getElementById('res-sublevel').textContent=isMixed?mixedProfile.summary:(profile.sublevel||'');
+
+  /* 키워드 */
+  const kwEl=document.getElementById('res-keywords'); kwEl.innerHTML='';
+  const kws=isMixed?mixedProfile.keywords:(profile.keywords||[]);
+  kws.forEach(k=>{ const s=document.createElement('span'); s.className='result-kw'; s.textContent=k; kwEl.appendChild(s); });
+
+  /* 분포 */
+  document.getElementById('res-dist-title').className=clsAdd.trim();
+  const distBody=document.getElementById('res-dist-body'); distBody.innerHTML='';
+  if(isTeal&&attachScores){
+    document.getElementById('res-dist-title').textContent='📊 유형별 점수';
+    const grid=document.createElement('div'); grid.className='attach-scores';
+    const labels={secure:'💚 안정',anxious:'💛 불안',avoidant:'💙 회피',disorganized:'🩶 혼란'};
+    Object.keys(attachScores).forEach(k=>{
+      const val=attachScores[k], isDom=k===profile._dominant;
+      const item=document.createElement('div');
+      item.className='attach-score-item'+(isDom?' dominant':'');
+      const pct=((val-1)/3)*100;
+      item.innerHTML='<div class="attach-score-name">'+labels[k]+'</div>'
+        +'<div class="attach-score-bar-bg"><div class="attach-score-bar-fg" style="width:0%" data-pct="'+pct+'"></div></div>'
+        +'<div class="attach-score-val">'+val.toFixed(1)+' / 4.0</div>';
+      grid.appendChild(item);
     });
+    distBody.appendChild(grid);
+    setTimeout(()=>{ document.querySelectorAll('.attach-score-bar-fg').forEach(el=>{ el.style.width=el.dataset.pct+'%'; }); },100);
+  } else {
+    document.getElementById('res-dist-title').textContent='📊 점수 분포';
+    const barBg=document.createElement('div'); barBg.className='score-bar-wrap';
+    const pct=((score-currentSurvey.barMin)/(currentSurvey.barMax-currentSurvey.barMin))*100;
+    barBg.innerHTML='<div class="score-bar-labels"><span>'+currentSurvey.barMin+'점</span><span>'+currentSurvey.barMax+'점</span></div>'
+      +'<div class="score-bar-bg'+clsAdd+'"><div class="score-bar-fg'+clsAdd+'" id="score-bar" style="width:0%"></div></div>';
+    distBody.appendChild(barBg);
+    const zonesEl=document.createElement('div'); zonesEl.className='score-zones';
+    currentSurvey.zones.forEach((z,i)=>{
+      const div=document.createElement('div');
+      div.className='zone'+(i===profile.zoneIdx?' active':'');
+      div.style.background=z.bg; div.style.color=z.color; div.textContent=z.label;
+      zonesEl.appendChild(div);
+    });
+    distBody.appendChild(zonesEl);
+    setTimeout(()=>{ document.getElementById('score-bar').style.width=Math.max(3,pct)+'%'; },100);
   }
 
-  function shareResult() {
-  const total = answers.reduce((a, b) => a + b, 0);
-  const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]);
-  const text =
-    '🪞 자존감 척도 테스트 결과\n\n'
-    + profile.emoji + ' ' + total + '점 / 50점\n'
-    + '"' + profile.level + '"\n\n'
-    + profile.quote
-    + '\n\n나도 해보기 → ' + SITE_URL;
-
-  // 모바일 등 Web Share API 지원 환경 → 기본 공유 시트
-  if (navigator.share) {
-		navigator.share({
-		  title: '🪞 자존감 척도 테스트 결과',
-		  text: text,
-		}).catch(() => {}); // 사용자가 취소해도 에러 무시
-	  } else {
-		// PC 등 미지원 환경 → 클립보드 복사
-		if (navigator.clipboard && navigator.clipboard.writeText) {
-		  navigator.clipboard.writeText(text)
-			.then(showToast)
-			.catch(() => fallbackCopy(text));
-		} else {
-		  fallbackCopy(text);
-		}
-	  }
-	}
-
-  function fallbackCopy(text) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
-    try {
-      const ok = document.execCommand('copy');
-      document.body.removeChild(textarea);
-      if (ok) { showToast(); } else { showShareModal(text); }
-    } catch (e) {
-      document.body.removeChild(textarea);
-      showShareModal(text);
-    }
+  /* 요약 */
+  document.getElementById('res-summary-title').className=clsAdd.trim();
+  document.getElementById('res-summary-title').textContent='💬 유형 특징';
+  const quote=document.getElementById('res-quote');
+  quote.className='result-quote'+clsAdd;
+  if(isTeal){
+    quote.textContent=isMixed?mixedProfile.summary:profile.summary;
+    if(!isMixed&&profile.note){ quote.textContent+=' · 주의: '+profile.note; }
+  } else {
+    quote.textContent=profile.quote;
   }
 
-  function showShareModal(text) {
-    const overlay = document.createElement('div');
-    overlay.className = 'share-modal-overlay';
-    overlay.innerHTML =
-      '<div class="share-modal">'
-      + '<p>📋 아래 텍스트를 복사해서 공유하세요!</p>'
-      + '<textarea readonly>' + text + '</textarea>'
-      + '<button onclick="this.closest(\'.share-modal-overlay\').remove()">닫기</button>'
-      + '</div>';
-    document.body.appendChild(overlay);
-    overlay.querySelector('textarea').select();
-  }
+  const traitsEl=document.getElementById('res-traits'); traitsEl.innerHTML='';
+  const traitList=isMixed?mixedProfile.traits:profile.traits;
+  traitList.forEach(t=>{
+    traitsEl.innerHTML+='<div class="trait-item"><div class="trait-dot'+clsAdd+'"></div><span>'+t+'</span></div>';
+  });
 
-  function showToast() {
-    const t = document.getElementById('toast');
-    t.textContent = '✅ 결과가 클립보드에 복사됐어요!';
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
+  /* 코칭 */
+  const coachCard=document.getElementById('res-coaching-card');
+  coachCard.className='coaching-card'+clsAdd;
+  const coachTitle=document.getElementById('res-coaching-title');
+  coachTitle.className=clsAdd.trim();
+  coachTitle.textContent=isTeal?'💌 연애 팁':'🌱 성장 가이드';
+  const coachEl=document.getElementById('res-coaching'); coachEl.innerHTML='';
+  const coachList=isMixed?mixedProfile.coaching:profile.coaching;
+  coachList.forEach((c2,i)=>{
+    coachEl.innerHTML+='<div class="coaching-item"><div class="coaching-num'+clsAdd+'">'+(i+1)+'</div><span>'+c2+'</span></div>';
+  });
 
-  function retryAll() {
-    document.getElementById('result-screen').style.display = 'none';
-    document.getElementById('survey-list').style.display = 'block';
-    document.getElementById('step-dots').innerHTML = '';
-    answers = [];
-    currentQ = 0;
-  }
+  /* 꼭기억 */
+  const remCard=document.getElementById('res-remember-card');
+  remCard.style.display=currentSurvey.showRemember?'':'none';
+  if(currentSurvey.showRemember) document.getElementById('res-remember-text').textContent=currentSurvey.rememberText;
 
-  updateDots();
+  /* 공유 버튼 */
+  document.getElementById('btn-share').className='btn-share'+clsAdd;
+
+  /* 더 보기 */
+  const moreList=document.getElementById('more-survey-list'); moreList.innerHTML='';
+  surveys.forEach((s,idx)=>{
+    if(s.id===currentSurvey.id)return;
+    const iconCls=s.color==='purple'?'purple-bg':s.color==='teal'?'teal-bg':'pink';
+    const cardCls=s.color==='purple'?'purple-card':s.color==='teal'?'teal-card':'';
+    const badgeCls=s.color==='purple'?'purple':s.color==='teal'?'teal':'';
+    const card=document.createElement('div');
+    card.className='survey-card'+( cardCls?' '+cardCls:'');
+    card.onclick=()=>startSurvey(idx);
+    card.innerHTML='<div class="survey-icon '+iconCls+'">'+s.emoji+'</div>'
+      +'<div class="survey-card-info"><h3>'+s.title+'</h3><p>'+s.questions.length+'문항 · 지금 바로 해보세요!</p></div>'
+      +'<span class="survey-badge badge-available'+(badgeCls?' '+badgeCls:'')+'">시작하기</span>';
+    moreList.appendChild(card);
+  });
+}
+
+/* ===================== 공유 ===================== */
+function shareResult(){
+  const score=window._lastScore, profile=window._lastProfile;
+  const isMixed=window._isMixed, mp=window._mixedProfile;
+  const displayP=isMixed?mp:profile;
+  let text=currentSurvey.emoji+' '+currentSurvey.title+' 결과\n\n'
+    +displayP.emoji+' '+displayP.name+'\n'
+    +(isMixed?mp.summary:profile.summary||profile.quote||'')
+    +'\n\n나도 해보기 → '+SITE_URL;
+  if(score!==null) text=currentSurvey.emoji+' '+currentSurvey.title+' 결과\n\n'
+    +displayP.emoji+' '+score+'점 / '+currentSurvey.barMax+'점\n'+profile.level
+    +(profile.sublevel?'\n'+profile.sublevel:'')
+    +'\n\n'+profile.quote+'\n\n나도 해보기 → '+SITE_URL;
+
+  if(navigator.share){ navigator.share({title:currentSurvey.title+' 결과',text}).catch(()=>{}); }
+  else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(showToast).catch(()=>fallbackCopy(text)); }
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;opacity:0;top:0;left:0;';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{ const ok=document.execCommand('copy'); document.body.removeChild(ta); ok?showToast():showShareModal(text); }
+  catch(e){ document.body.removeChild(ta); showShareModal(text); }
+}
+function showShareModal(text){
+  const o=document.createElement('div'); o.className='share-modal-overlay';
+  o.innerHTML='<div class="share-modal"><p>📋 아래 텍스트를 복사해서 공유하세요!</p><textarea readonly>'+text+'</textarea><button onclick="this.closest(\'.share-modal-overlay\').remove()">닫기</button></div>';
+  document.body.appendChild(o); o.querySelector('textarea').select();
+}
+function showToast(){
+  const t=document.getElementById('toast'); t.textContent='✅ 결과가 클립보드에 복사됐어요!';
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);
+}
+function retryAll(){
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('survey-list').style.display='block';
+  document.getElementById('site-header').className='site-header';
+  document.getElementById('header-title').textContent='나를 알아가는 시간 ✨';
+  document.getElementById('header-sub').textContent='가볍게, 재밌게, 나 자신을 탐색해봐요';
+  document.getElementById('step-dots').innerHTML='';
+}
 </script>
 </body>
 </html>
